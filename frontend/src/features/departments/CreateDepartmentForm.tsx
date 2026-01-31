@@ -41,20 +41,11 @@ export const CreateDepartmentForm = ({
   });
 
   const onSubmit = (data: DepartmentFormValues) => {
-    mutate(
-      {
-        // We need to cast or ensure types match, here we reconstruct slightly as API expects full object but checks required fields
-        ...data,
-        id: '', // Backend handles ID
-        createdAt: '', // Backend handles
-        updatedAt: '' // Backend handles
-      },
-      {
-        onSuccess: () => {
-          onSuccess();
-        }
+    mutate(data, {
+      onSuccess: () => {
+        onSuccess();
       }
-    );
+    });
   };
 
   return (
