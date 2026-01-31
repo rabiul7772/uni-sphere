@@ -1,8 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import Modal from '@/ui/Modal';
+import { CreateDepartmentForm } from './CreateDepartmentForm';
 import { Plus, Search } from 'lucide-react';
+import { useState } from 'react';
 
 const DepartmentHeader = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   return (
     <div className="flex items-end justify-between">
       <div className="flex flex-col gap-2">
@@ -21,10 +26,24 @@ const DepartmentHeader = () => {
             className="pl-10 h-10 text-sm border-slate-200 bg-white"
           />
         </div>
-        <Button className="h-10 px-4 text-sm bg-indigo-600 hover:bg-indigo-700 text-white gap-2 shadow-lg shadow-indigo-200">
+        <Button
+          onClick={() => setIsOpenModal(true)}
+          className="h-10 px-4 text-sm bg-indigo-600 hover:bg-indigo-700 text-white gap-2 shadow-lg shadow-indigo-200"
+        >
           <Plus className="h-4 w-4" />
           Create
         </Button>
+        {isOpenModal && (
+          <Modal
+            title="Create Department"
+            onClose={() => setIsOpenModal(false)}
+          >
+            <CreateDepartmentForm
+              onSuccess={() => setIsOpenModal(false)}
+              onCancel={() => setIsOpenModal(false)}
+            />
+          </Modal>
+        )}
       </div>
     </div>
   );

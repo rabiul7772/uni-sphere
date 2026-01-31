@@ -1,8 +1,12 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { departments } from '@/constants';
+import type { Department } from '@/services/departments/apiDepartments';
 
-const DepartmentTableBody = () => {
+interface DepartmentTableBodyProps {
+  departments: Department[];
+}
+
+const DepartmentTableBody = ({ departments }: DepartmentTableBodyProps) => {
   return (
     <TableBody>
       {departments.map(dept => (
@@ -17,10 +21,10 @@ const DepartmentTableBody = () => {
             {dept.name}
           </TableCell>
           <TableCell className="font-semibold text-slate-700 text-sm text-center">
-            {dept.count}
+            {Array.isArray(dept.subjects) ? dept.subjects.length : 0}
           </TableCell>
           <TableCell className="text-slate-500 max-w-[500px] truncate text-sm text-center">
-            {dept.description}
+            {dept.description || '-'}
           </TableCell>
           <TableCell className="text-right pr-8">
             <Button
