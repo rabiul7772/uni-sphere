@@ -9,7 +9,7 @@ export const getAllSubjects = async (req: Request, res: Response) => {
       }
     });
 
-    if (!data) {
+    if (data.length === 0) {
       return res.status(404).json({ message: 'Subjects not found' });
     }
 

@@ -15,7 +15,7 @@ export const getAllDepartments = async (req: Request, res: Response) => {
       }
     });
 
-    if (!data) {
+    if (data.length === 0) {
       return res.status(404).json({ message: 'Departments not found' });
     }
 
