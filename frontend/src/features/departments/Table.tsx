@@ -1,12 +1,17 @@
 import { Table } from '@/components/ui/table';
 import DepartmentTableBody from './TableBody';
 import DepartmentTableHeader from './TableHeader';
+import type { Department } from '@/services/departments/apiDepartments';
 
-const DepartmentTable = () => {
+interface DepartmentTableProps {
+  departments: Department[];
+}
+
+const DepartmentTable = ({ departments }: DepartmentTableProps) => {
   return (
     <Table>
       <DepartmentTableHeader />
-      <DepartmentTableBody />
+      <DepartmentTableBody departments={departments} />
     </Table>
   );
 };
