@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import AppLayout from './ui/AppLayout';
 import Departments from './pages/Departments';
 import { Toaster } from 'react-hot-toast';
+import Subjects from './pages/Subjects';
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<div>Home</div>} />
             <Route path="/departments" element={<Departments />} />
-            <Route path="/subjects" element={<div>Subjects</div>} />
+            <Route path="/subjects" element={<Subjects />} />
             <Route path="/faculty" element={<div>Faculty</div>} />
             <Route path="/enrollments" element={<div>Enrollments</div>} />
             <Route path="/classes" element={<div>Classes</div>} />
