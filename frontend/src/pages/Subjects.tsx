@@ -1,6 +1,5 @@
 import SubjectBreadcrumb from '@/features/subjects/Breadcrumb';
 import SubjectHeader from '@/features/subjects/Header';
-import SubjectToolbar from '@/features/subjects/Toolbar';
 import SubjectTable from '@/features/subjects/Table';
 import SubjectPagination from '@/features/subjects/Pagination';
 import { useSubjects } from '@/hooks/subjects/useSubjects';
