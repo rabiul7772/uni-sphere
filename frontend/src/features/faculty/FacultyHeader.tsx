@@ -19,6 +19,7 @@ export const FacultyHeader = ({
 
       <div className="relative max-w-md">
         <Input
+          type="search"
           placeholder="Search by name or email"
           className="pl-10 h-11 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
           value={searchTerm}

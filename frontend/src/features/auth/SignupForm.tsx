@@ -17,6 +17,7 @@ import { useSignup } from '@/hooks/auth/useAuth';
 import { uploadImage } from '@/services/auth/apiCloudinary';
 import { Spinner } from '@/components/ui/spinner';
 import { Camera, User, Mail, Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const signupSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -73,6 +74,7 @@ export const SignupForm = () => {
       mutate({ ...data, avatarUrl });
     } catch (error) {
       setIsUploading(false);
+      toast.error('Failed to upload avatar. Please try again.');
     }
   };
 
