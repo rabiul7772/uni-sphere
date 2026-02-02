@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Faculty from './pages/Faculty';
+import Classes from './pages/Classes';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
               <Route path="/subjects" element={<Subjects />} />
               <Route path="/faculty" element={<Faculty />} />
               <Route path="/enrollments" element={<div>Enrollments</div>} />
-              <Route path="/classes" element={<div>Classes</div>} />
+              <Route path="/classes" element={<Classes />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />} />
