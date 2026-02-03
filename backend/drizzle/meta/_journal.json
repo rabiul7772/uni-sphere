@@ -8,6 +8,41 @@
       "when": 1769798474250,
       "tag": "0000_chemical_robin_chapel",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1769969439735,
+      "tag": "0001_ancient_lifeguard",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770048992592,
+      "tag": "0002_bent_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1770051471023,
+      "tag": "0003_outgoing_cyclops",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770056143767,
+      "tag": "0004_parched_inertia",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1770096245852,
+      "tag": "0005_cute_titanium_man",
+      "breakpoints": true
     }
   ]
 }
