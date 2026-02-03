@@ -23,7 +23,13 @@ export const protect = async (
       });
     }
 
-    const secret = process.env.JWT_SECRET || 'fallback_secret';
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      return res.status(500).json({
+        success: false,
+        message: 'Server misconfigured: missing JWT secret'
+      });
+    }
     const decoded: any = jwt.verify(token, secret);
 
     const foundUsers = await db

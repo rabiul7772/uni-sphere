@@ -53,6 +53,21 @@ export const createClass = async (req: Request, res: Response) => {
       description
     } = req.body;
 
+    if (!subjectId || !teacherId || !name || !capacity || !description) {
+      return res.status(400).json({
+        success: false,
+        message:
+          'subjectId, teacherId, name, capacity, and description are required'
+      });
+    }
+
+    if (capacity <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'capacity must be greater than 0'
+      });
+    }
+
     const [newClass] = await db
       .insert(classes)
       .values({

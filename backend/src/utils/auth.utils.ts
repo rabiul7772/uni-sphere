@@ -10,7 +10,12 @@ export const comparePassword = async (password: string, hashed: string) => {
 };
 
 export const generateToken = (userId: number, role: string) => {
-  const secret = process.env.JWT_SECRET || 'fallback_secret';
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable must be set');
+  }
+
   return jwt.sign({ id: userId, role }, secret, {
     expiresIn: '30d'
   });

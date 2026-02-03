@@ -19,6 +19,14 @@ export const signup = async (req: Request, res: Response) => {
       });
     }
 
+    const allowedRoles = new Set(['admin', 'student', 'teacher']);
+    if (!allowedRoles.has(role)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid role'
+      });
+    }
+
     const existingUsers = await db
       .select()
       .from(users)
@@ -134,7 +142,12 @@ export const checkAuth = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
+  });
+
   res.status(200).json({
     success: true,
     message: 'Logged out successfully'

@@ -4,6 +4,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   varchar
 } from 'drizzle-orm/pg-core';
 
@@ -65,16 +66,25 @@ export const classes = pgTable('classes', {
   ...timestamps
 });
 
-export const enrollments = pgTable('enrollments', {
-  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-  studentId: integer('student_id')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  classId: integer('class_id')
-    .notNull()
-    .references(() => classes.id, { onDelete: 'cascade' }),
-  ...timestamps
-});
+export const enrollments = pgTable(
+  'enrollments',
+  {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    studentId: integer('student_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    classId: integer('class_id')
+      .notNull()
+      .references(() => classes.id, { onDelete: 'cascade' }),
+    ...timestamps
+  },
+  table => [
+    uniqueIndex('enrollments_student_class_unique').on(
+      table.studentId,
+      table.classId
+    )
+  ]
+);
 
 export const departmentsRelations = relations(departments, ({ many }) => ({
   subjects: many(subjects)

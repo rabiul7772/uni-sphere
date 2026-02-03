@@ -7,7 +7,7 @@ import {
   departments,
   users
 } from '../db/schema/app.js';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 export const enrollInClass = async (req: Request, res: Response) => {
   try {
@@ -17,6 +17,23 @@ export const enrollInClass = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         message: 'Student ID and Class ID are required'
+      });
+    }
+
+    const existing = await db
+      .select({ id: enrollments.id })
+      .from(enrollments)
+      .where(
+        and(
+          eq(enrollments.studentId, studentId),
+          eq(enrollments.classId, classId)
+        )
+      )
+      .limit(1);
+    if (existing.length) {
+      return res.status(409).json({
+        success: false,
+        message: 'Student is already enrolled in this class'
       });
     }
 

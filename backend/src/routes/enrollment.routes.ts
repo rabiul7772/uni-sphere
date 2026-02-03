@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { enrollInClass } from '../controllers/enrollment.controller.js';
+import { protect } from '../middlewares/auth.middleware.js';
 
-const router = Router();
+const enrollmentRouter = Router();
 
-router.post('/', enrollInClass);
+enrollmentRouter.post('/', protect, enrollInClass);
 
-export default router;
+export default enrollmentRouter;

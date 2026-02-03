@@ -45,7 +45,7 @@ export const createDepartment = async (req: Request, res: Response) => {
 
     const data = await db.insert(departments).values(newDepartment).returning();
 
-    if (!data) {
+    if (!data || data.length === 0) {
       return res.status(500).json({
         success: false,
         message: 'Failed to create department'
