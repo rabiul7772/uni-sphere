@@ -1,6 +1,12 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
-import { classes, subjects, users } from '../db/schema/app.js';
+import {
+  classes,
+  enrollments,
+  subjects,
+  users,
+  departments
+} from '../db/schema/app.js';
 import { desc, eq } from 'drizzle-orm';
 
 export const getClasses = async (req: Request, res: Response) => {
@@ -90,6 +96,142 @@ export const createClass = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Internal server error while creating class'
+    });
+  }
+};
+
+export const getClassById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Class ID is required'
+      });
+    }
+
+    const classData = await db
+      .select({
+        id: classes.id,
+        name: classes.name,
+        bannerUrl: classes.bannerUrl,
+        capacity: classes.capacity,
+        status: classes.status,
+        description: classes.description,
+        createdAt: classes.createdAt,
+        subject: {
+          id: subjects.id,
+          name: subjects.name,
+          code: subjects.code,
+          description: subjects.description
+        },
+        department: {
+          id: departments.id,
+          name: departments.name,
+          description: departments.description
+        },
+        teacher: {
+          id: users.id,
+          name: users.name,
+          email: users.email,
+          avatarUrl: users.avatarUrl
+        }
+      })
+      .from(classes)
+      .leftJoin(subjects, eq(classes.subjectId, subjects.id))
+      .leftJoin(departments, eq(subjects.departmentId, departments.id))
+      .leftJoin(users, eq(classes.teacherId, users.id))
+      .where(eq(classes.id, Number(id)))
+      .limit(1);
+
+    if (classData.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Class not found'
+      });
+    }
+
+    // Fetch enrolled students separately to avoid duplication in joins
+    const enrolledStudents = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        avatarUrl: users.avatarUrl,
+        enrolledAt: enrollments.createdAt
+      })
+      .from(enrollments)
+      .leftJoin(users, eq(enrollments.studentId, users.id))
+      .where(eq(enrollments.classId, Number(id)));
+
+    res.status(200).json({
+      success: true,
+      data: {
+        ...classData[0],
+        enrolledStudents
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching class details:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while fetching class details'
+    });
+  }
+};
+
+export const updateClass = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { teacherId, name, bannerUrl, capacity, status, description } =
+      req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Class ID is required'
+      });
+    }
+
+    // Check if class exists
+    const existingClass = await db
+      .select()
+      .from(classes)
+      .where(eq(classes.id, Number(id)))
+      .limit(1);
+
+    if (existingClass.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Class not found'
+      });
+    }
+
+    // Prepare update data
+    const updateData: any = {};
+    if (teacherId !== undefined) updateData.teacherId = teacherId;
+    if (name !== undefined) updateData.name = name;
+    if (bannerUrl !== undefined) updateData.bannerUrl = bannerUrl;
+    if (capacity !== undefined) updateData.capacity = capacity;
+    if (status !== undefined) updateData.status = status;
+    if (description !== undefined) updateData.description = description;
+
+    const [updatedClass] = await db
+      .update(classes)
+      .set(updateData)
+      .where(eq(classes.id, Number(id)))
+      .returning();
+
+    res.status(200).json({
+      success: true,
+      data: updatedClass
+    });
+  } catch (error) {
+    console.error('Error updating class:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while updating class'
     });
   }
 };

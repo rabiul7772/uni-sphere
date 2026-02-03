@@ -33,7 +33,7 @@ export const enrollInClass = async (req: Request, res: Response) => {
     if (existing.length) {
       return res.status(409).json({
         success: false,
-        message: 'Student is already enrolled in this class'
+        message: 'You are already enrolled in this class'
       });
     }
 
