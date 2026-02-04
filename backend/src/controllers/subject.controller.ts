@@ -1,6 +1,16 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
 import { NewSubject, subjects } from '../db/schema/app.js';
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
+
+const updateSubjectSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').optional(),
+  description: z
+    .string()
+    .min(10, 'Description must be at least 10 characters')
+    .optional()
+});
 
 export const getAllSubjects = async (req: Request, res: Response) => {
   try {
@@ -64,6 +74,95 @@ export const createSubject = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Internal server error while creating subject'
+    });
+  }
+};
+
+export const getSubjectById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = await db.query.subjects.findFirst({
+      where: (subjects, { eq }) => eq(subjects.id, Number(id)),
+      with: {
+        department: true,
+        classes: {
+          with: {
+            teacher: true,
+            enrollments: {
+              with: {
+                student: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!data) return res.status(404).json({ message: 'Subject not found' });
+
+    res.status(200).json({
+      success: true,
+      message: 'Subject fetched successfully',
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while fetching subject'
+    });
+  }
+};
+
+export const updateSubject = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = updateSubjectSchema.safeParse(req.body);
+
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed'
+      });
+    }
+
+    const { name, description } = result.data;
+
+    if (!name && !description) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name or description is required for update'
+      });
+    }
+
+    const data = await db
+      .update(subjects)
+      .set({
+        ...(name && { name }),
+        ...(description && { description }),
+        updatedAt: new Date()
+      })
+      .where(eq(subjects.id, Number(id)))
+      .returning();
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Subject not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Subject updated successfully',
+      data: data[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while updating subject'
     });
   }
 };
