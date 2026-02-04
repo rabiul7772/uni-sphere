@@ -25,3 +25,58 @@ export const getUsers = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUserById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const data = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.id, Number(id)),
+      with: {
+        classes: {
+          with: {
+            subject: {
+              with: {
+                department: true
+              }
+            }
+          }
+        },
+        enrollments: {
+          with: {
+            class: {
+              with: {
+                subject: {
+                  with: {
+                    department: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Remove password
+    const { password, ...userWithoutPassword } = data as any;
+
+    res.status(200).json({
+      success: true,
+      data: userWithoutPassword
+    });
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while fetching user'
+    });
+  }
+};
