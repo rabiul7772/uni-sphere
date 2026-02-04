@@ -1,6 +1,16 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
 import { departments, type NewDepartment } from '../db/schema/app.js';
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
+
+const updateDepartmentSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').optional(),
+  description: z
+    .string()
+    .min(10, 'Description must be at least 10 characters')
+    .optional()
+});
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
@@ -62,6 +72,97 @@ export const createDepartment = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Internal server error while creating department'
+    });
+  }
+};
+
+export const getDepartmentById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const data = await db.query.departments.findFirst({
+      where: (depts, { eq }) => eq(depts.id, Number(id)),
+      with: {
+        subjects: {
+          with: {
+            classes: {
+              with: {
+                teacher: true,
+                subject: true,
+                enrollments: {
+                  with: {
+                    student: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!data) return res.status(404).json({ message: 'Department not found' });
+
+    res.status(200).json({
+      success: true,
+      message: 'Department fetched successfully',
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Internal server error while fetching department'
+    });
+  }
+};
+
+export const updateDepartment = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const result = updateDepartmentSchema.safeParse(req.body);
+
+    if (!result.success)
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed'
+      });
+
+    const { name, description } = result.data;
+
+    if (!name && !description) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name or description is required for update'
+      });
+    }
+
+    const data = await db
+      .update(departments)
+      .set({
+        ...(name && { name }),
+        ...(description && { description }),
+        updatedAt: new Date()
+      })
+      .where(eq(departments.id, Number(id)))
+      .returning();
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Department not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Department updated successfully',
+      data: data[0]
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while updating department'
     });
   }
 };
