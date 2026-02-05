@@ -1,10 +1,18 @@
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import Modal from '@/ui/Modal';
 import { CreateClassForm } from './CreateClassForm';
+import SearchInput from '@/components/shared/SearchInput';
+import CreateButton from '@/components/shared/CreateButton';
 
-export const ClassesHeader = () => {
+interface ClassesHeaderProps {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}
+
+export const ClassesHeader = ({
+  searchTerm,
+  onSearchChange
+}: ClassesHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -16,13 +24,14 @@ export const ClassesHeader = () => {
         </p>
       </div>
 
-      <Button
-        onClick={() => setIsModalOpen(true)}
-        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-4 rounded-lg flex items-center gap-2"
-      >
-        <Plus className="h-5 w-5" />
-        <span className="font-semibold text-base">Create a class</span>
-      </Button>
+      <div className="flex items-center gap-4 rounded-xl bg-white p-1">
+        <SearchInput
+          searchTerm={searchTerm}
+          onSearchChange={onSearchChange}
+          placeholder="Search by class name"
+        />
+        <CreateButton onClick={() => setIsModalOpen(true)} />
+      </div>
 
       <Modal
         isOpen={isModalOpen}

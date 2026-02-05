@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,13 +15,17 @@ const SubjectBreadcrumb = () => {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">
-              <Home className="h-4 w-4" />
+            <BreadcrumbLink asChild>
+              <Link to="/">
+                <Home className="h-4 w-4" />
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Dashboard UI</BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link to="/">Dashboard UI</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

@@ -1,11 +1,43 @@
 import api from '@/lib/axios';
 
 export interface Department {
-  id: string; // Assuming UUID or similar
+  id: string;
   code: string;
   name: string;
   description: string | null;
-  subjects?: Array<{ id: string; name: string }>;
+  subjects?: Array<{
+    id: string;
+    name: string;
+    code: string;
+    description: string;
+    classes: Array<{
+      id: string;
+      name: string;
+      status: string;
+      teacher: {
+        id: string;
+        fullName: string;
+        email: string;
+        avatar?: string;
+        role: string;
+      };
+      subject: {
+        id: string;
+        name: string;
+        code: string;
+      };
+      enrollments: Array<{
+        id: string;
+        student: {
+          id: string;
+          fullName: string;
+          email: string;
+          avatar?: string;
+          role: string;
+        };
+      }>;
+    }>;
+  }>;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -21,11 +53,27 @@ export const getDepartments = async (): Promise<Department[]> => {
   return response.data.data;
 };
 
+export const getDepartment = async (id: string): Promise<Department> => {
+  const response = await api.get<ApiResponse<Department>>(`/departments/${id}`);
+  return response.data.data;
+};
+
 export const createDepartment = async (
   department: Department
 ): Promise<Department> => {
   const response = await api.post<ApiResponse<Department>>(
     '/departments',
+    department
+  );
+  return response.data.data;
+};
+
+export const updateDepartment = async (
+  id: string,
+  department: Partial<Department>
+): Promise<Department> => {
+  const response = await api.patch<ApiResponse<Department>>(
+    `/departments/${id}`,
     department
   );
   return response.data.data;

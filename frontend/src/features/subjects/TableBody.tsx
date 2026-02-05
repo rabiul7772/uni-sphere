@@ -1,26 +1,19 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router';
 import type { Subject } from '@/services/subjects/apiSubjects';
+import { colors } from '@/constants';
 
 interface SubjectTableBodyProps {
   subjects: Subject[];
 }
-
-const colors = [
-  'text-blue-600 bg-blue-50',
-  'text-red-600 bg-red-50',
-  'text-purple-600 bg-purple-50',
-  'text-pink-600 bg-pink-50',
-  'text-emerald-600 bg-emerald-50',
-  'text-orange-600 bg-orange-50',
-  'text-indigo-600 bg-indigo-50'
-];
 
 const getDepartmentColor = (id: number) => {
   return colors[id % colors.length];
 };
 
 const SubjectTableBody = ({ subjects }: SubjectTableBodyProps) => {
+  const navigate = useNavigate();
   return (
     <TableBody>
       {subjects.map(subject => (
@@ -37,7 +30,7 @@ const SubjectTableBody = ({ subjects }: SubjectTableBodyProps) => {
           <TableCell className="py-4">
             <span
               className={`px-3 py-1 rounded-full text-xs font-bold ${getDepartmentColor(
-                subject.departmentId
+                Number(subject.departmentId)
               )}`}
             >
               {subject.department?.name || 'Unknown'}
@@ -50,7 +43,8 @@ const SubjectTableBody = ({ subjects }: SubjectTableBodyProps) => {
             <Button
               variant="outline"
               size="sm"
-              className="h-8 text-xs font-semibold text-slate-600 border-slate-200"
+              className="h-8 text-xs font-semibold text-slate-600 border-slate-200 bg-white"
+              onClick={() => navigate(`/subjects/${subject.id}`)}
             >
               View
             </Button>

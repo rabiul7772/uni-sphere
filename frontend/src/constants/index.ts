@@ -1,16 +1,5 @@
 export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-
-// export const CLOUDINARY_UPLOAD_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_URL;
-// export const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-
-// export const BASE_URL = import.meta.env.VITE_API_URL;
-// export const ACCESS_TOKEN_KEY = import.meta.env.VITE_ACCESS_TOKEN_KEY;
-// export const REFRESH_TOKEN_KEY = import.meta.env.VITE_REFRESH_TOKEN_KEY;
-
-// export const REFRESH_TOKEN_URL = `${BASE_URL}/refresh-token`;
-
-// export const CLOUDINARY_UPLOAD_PRESET = import.meta.env
-//   .VITE_CLOUDINARY_UPLOAD_PRESET;
+export const PAGE_SIZE = 10;
 
 import {
   Building2,
@@ -25,9 +14,9 @@ export const navItems = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Departments', href: '/departments', icon: Building2 },
   { name: 'Subjects', href: '/subjects', icon: BookOpen },
+  { name: 'Classes', href: '/classes', icon: GraduationCap },
   { name: 'Faculty', href: '/faculty', icon: Users },
-  { name: 'Enrollments', href: '/enrollments', icon: ClipboardList },
-  { name: 'Classes', href: '/classes', icon: GraduationCap }
+  { name: 'Enrollments', href: '/enrollments', icon: ClipboardList }
 ];
 
 // Mock Data
@@ -74,4 +63,14 @@ export const departments = [
     subjects: 5,
     description: 'The study of matter, energy, and the laws of nature.'
   }
+];
+
+export const colors = [
+  'text-blue-600 bg-blue-50',
+  'text-red-600 bg-red-50',
+  'text-purple-600 bg-purple-50',
+  'text-pink-600 bg-pink-50',
+  'text-emerald-600 bg-emerald-50',
+  'text-orange-600 bg-orange-50',
+  'text-indigo-600 bg-indigo-50'
 ];

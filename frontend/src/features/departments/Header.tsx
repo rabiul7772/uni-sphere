@@ -1,11 +1,18 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import Modal from '@/ui/Modal';
 import { CreateDepartmentForm } from './CreateDepartmentForm';
-import { Plus, Search } from 'lucide-react';
 import { useState } from 'react';
+import SearchInput from '@/components/shared/SearchInput';
+import CreateButton from '@/components/shared/CreateButton';
 
-const DepartmentHeader = () => {
+interface DepartmentHeaderProps {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}
+
+const DepartmentHeader = ({
+  searchTerm,
+  onSearchChange
+}: DepartmentHeaderProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
@@ -19,20 +26,12 @@ const DepartmentHeader = () => {
         </p>
       </div>
       <div className="flex items-center justify-between gap-4 rounded-xl bg-white p-1">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-          <Input
-            placeholder="Search by name or code"
-            className="pl-10 h-10 text-sm border-slate-200 bg-white"
-          />
-        </div>
-        <Button
-          onClick={() => setIsOpenModal(true)}
-          className="h-10 px-4 text-sm bg-indigo-600 hover:bg-indigo-700 text-white gap-2 shadow-lg shadow-indigo-200"
-        >
-          <Plus className="h-4 w-4" />
-          Create
-        </Button>
+        <SearchInput
+          searchTerm={searchTerm}
+          onSearchChange={onSearchChange}
+          placeholder="Search by name or code"
+        />
+        <CreateButton onClick={() => setIsOpenModal(true)} />
         {isOpenModal && (
           <Modal
             title="Create Department"

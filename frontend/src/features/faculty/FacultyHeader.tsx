@@ -1,32 +1,51 @@
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { ArrowLeft, Home, ChevronRight, RefreshCw, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import type { UserDetail } from '@/services/users/apiUsers';
 
 interface FacultyHeaderProps {
-  searchTerm: string;
-  onSearchChange: (value: string) => void;
+  user: UserDetail;
 }
 
-export const FacultyHeader = ({
-  searchTerm,
-  onSearchChange
-}: FacultyHeaderProps) => {
-  return (
-    <div className="space-y-6 mb-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">Faculty</h1>
-        <p className="text-slate-500 mt-1">Browse and manage faculty members</p>
-      </div>
+const FacultyHeader = ({ user }: FacultyHeaderProps) => {
+  const navigate = useNavigate();
 
-      <div className="relative max-w-md">
-        <Input
-          type="search"
-          placeholder="Search by name or email"
-          className="pl-10 h-11 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm"
-          value={searchTerm}
-          onChange={e => onSearchChange(e.target.value)}
+  return (
+    <div className="space-y-4">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-2 text-sm font-medium text-slate-500">
+        <Home
+          className="h-4 w-4 cursor-pointer hover:text-slate-900"
+          onClick={() => navigate('/')}
         />
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+        <ChevronRight className="h-4 w-4" />
+        <span
+          className="cursor-pointer hover:text-slate-900"
+          onClick={() => navigate('/faculty')}
+        >
+          Faculty
+        </span>
+        <ChevronRight className="h-4 w-4" />
+        <span className="text-slate-900">Show</span>
+      </nav>
+
+      {/* Main Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-10 w-10 rounded-full hover:bg-slate-100"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+
+          <h1 className="text-2xl font-bold text-slate-900">{user?.name}</h1>
+        </div>
       </div>
     </div>
   );
 };
+
+export default FacultyHeader;

@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Filter, Plus } from 'lucide-react';
 import Modal from '@/ui/Modal';
 import { CreateSubjectForm } from './CreateSubjectForm';
+import SearchInput from '@/components/shared/SearchInput';
+import CreateButton from '@/components/shared/CreateButton';
 
-const SubjectHeader = () => {
+interface SubjectHeaderProps {
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+}
+
+const SubjectHeader = ({ searchTerm, onSearchChange }: SubjectHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -16,21 +21,14 @@ const SubjectHeader = () => {
         </p>
       </div>
 
-      <Button
-        variant="outline"
-        className="h-11 px-4 gap-2 border-slate-200 rounded-xl text-slate-600 bg-white"
-      >
-        <Filter className="h-4 w-4" />
-        <span className="text-sm font-medium">Filters</span>
-      </Button>
-
-      <Button
-        onClick={() => setIsModalOpen(true)}
-        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-4 rounded-lg flex items-center gap-2"
-      >
-        <Plus className="h-5 w-5" />
-        <span className="font-semibold text-base">Add</span>
-      </Button>
+      <div className="flex items-center gap-4 rounded-xl bg-white p-1">
+        <SearchInput
+          searchTerm={searchTerm}
+          onSearchChange={onSearchChange}
+          placeholder="Search by name or code"
+        />
+        <CreateButton onClick={() => setIsModalOpen(true)} />
+      </div>
 
       <Modal
         isOpen={isModalOpen}

@@ -8,8 +8,10 @@ import {
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router';
 import { type Class } from '@/services/classes/apiClasses';
 import { Badge } from '@/components/ui/badge';
+import { Spinner } from '@/components/ui/spinner';
 
 interface ClassesTableProps {
   classes: Class[];
@@ -17,13 +19,9 @@ interface ClassesTableProps {
 }
 
 export const ClassesTable = ({ classes, isLoading }: ClassesTableProps) => {
-  if (isLoading) {
-    return (
-      <div className="w-full h-64 flex items-center justify-center text-slate-500 font-bold">
-        Loading classes...
-      </div>
-    );
-  }
+  const navigate = useNavigate();
+
+  if (isLoading) return <Spinner size="xl" />;
 
   if (classes.length === 0) {
     return (
@@ -125,7 +123,7 @@ export const ClassesTable = ({ classes, isLoading }: ClassesTableProps) => {
                   variant="outline"
                   size="sm"
                   className="rounded-lg h-8 px-4 font-bold border-slate-200 text-slate-600 hover:bg-slate-50"
-                  onClick={() => console.log('View class:', cls.id)}
+                  onClick={() => navigate(`/classes/${cls.id}`)}
                 >
                   View
                 </Button>

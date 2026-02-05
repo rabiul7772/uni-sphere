@@ -1,6 +1,7 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import type { Department } from '@/services/departments/apiDepartments';
+import { Link } from 'react-router';
 
 interface DepartmentTableBodyProps {
   departments: Department[];
@@ -27,13 +28,15 @@ const DepartmentTableBody = ({ departments }: DepartmentTableBodyProps) => {
             {dept.description || '-'}
           </TableCell>
           <TableCell className="text-right pr-8">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-            >
-              View
-            </Button>
+            <Link to={`/departments/${dept.id}`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              >
+                View
+              </Button>
+            </Link>
           </TableCell>
         </TableRow>
       ))}
