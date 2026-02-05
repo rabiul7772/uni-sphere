@@ -1,7 +1,2 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git -C \"c:\\\\Users\\\\Rabiul\\\\Desktop\\\\UniSphere\" show HEAD:frontend/src/features/classes/ClassBasicFields.tsx)"
-    ]
   }
 }
