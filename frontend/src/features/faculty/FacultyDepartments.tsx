@@ -9,23 +9,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router';
-import { colors } from '@/constants';
 
-interface Department {
-  id: number;
-  name: string;
-  code: string;
-  description?: string;
-}
+import type { Department } from '@/services/departments/apiDepartments';
+import { getDepartmentColor } from '@/lib/utils';
 
 interface FacultyDepartmentsProps {
   departments: Department[];
   userName: string;
 }
-
-const getDepartmentColor = (id: number) => {
-  return colors[id % colors.length];
-};
 
 const FacultyDepartments = ({
   departments,
@@ -82,7 +73,7 @@ const FacultyDepartments = ({
                   <TableCell className="py-4">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-bold ${getDepartmentColor(
-                        dept.id
+                        Number(dept.id)
                       )}`}
                     >
                       {dept.code}

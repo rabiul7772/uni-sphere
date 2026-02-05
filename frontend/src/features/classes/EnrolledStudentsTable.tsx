@@ -63,17 +63,12 @@ export default function EnrolledStudentsTable({
                   </div>
                 </div>
               </TableCell>
-              <Link to={`/faculty/${student.id}`}>
-                <TableCell>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer"
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </Link>
+
+              <TableCell>
+                <Button variant="outline" size="sm" className="cursor-pointer">
+                  <Link to={`/faculty/${student.id}`}>View</Link>
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

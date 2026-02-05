@@ -14,14 +14,14 @@ import { useNavigate } from 'react-router';
 
 interface SubjectClassesProps {
   classes: Array<{
-    id: string;
+    id: number;
     name: string;
     status: 'active' | 'inactive';
-    teacher: {
-      id: string;
-      fullName: string;
+    teacher?: {
+      id: number;
+      name: string;
       email: string;
-      avatarUrl?: string;
+      avatarUrl: string | null;
     };
   }>;
 }
@@ -77,12 +77,12 @@ const SubjectClasses = ({ classes }: SubjectClassesProps) => {
                       <Avatar className="h-8 w-8">
                         <AvatarImage
                           src={
-                            cls.teacher.avatarUrl ||
+                            cls.teacher?.avatarUrl ||
                             '/avatars/default-avatar.png'
                           }
                         />
                         <AvatarFallback className="bg-slate-100 text-xs text-slate-600 font-bold">
-                          {cls.teacher?.fullName
+                          {cls.teacher?.name
                             ?.split(' ')
                             .map(n => n[0])
                             .join('')}
@@ -90,7 +90,7 @@ const SubjectClasses = ({ classes }: SubjectClassesProps) => {
                       </Avatar>
                       <div className="flex flex-col">
                         <span className="text-sm font-semibold text-slate-700">
-                          {cls.teacher?.fullName}
+                          {cls.teacher?.name}
                         </span>
                         <span className="text-xs text-slate-400">
                           {cls.teacher?.email}

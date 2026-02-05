@@ -7,8 +7,11 @@ export const useEnrollInClass = () => {
 
   return useMutation({
     mutationFn: enrollInClass,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['classes'] });
+      queryClient.invalidateQueries({
+        queryKey: ['class', String(variables.classId)]
+      });
       // toast.success('Enrolled successfully!'); // Will handle success UI instead
     },
     onError: (err: any) => {

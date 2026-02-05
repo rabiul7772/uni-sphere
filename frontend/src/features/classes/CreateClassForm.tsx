@@ -47,7 +47,7 @@ export const CreateClassForm = ({
   const { mutate: createClass, isPending: isCreating } = useCreateClass();
   const { mutate: updateClass, isPending: isUpdating } = useUpdateClass();
 
-  const teachers = users?.filter(
+  const teachers = users?.data?.filter(
     (u: any) => u.role === 'teacher' || u.role === 'admin'
   );
 
