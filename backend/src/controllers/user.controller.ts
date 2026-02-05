@@ -1,13 +1,39 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
 import { users } from '../db/schema/app.js';
-import { desc } from 'drizzle-orm';
+import { desc, sql, or, ilike, and, eq } from 'drizzle-orm';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const search = req.query.search as string;
+    const role = req.query.role as string;
+    const offset = (page - 1) * limit;
+
+    const conditions = [];
+
+    if (search)
+      conditions.push(
+        or(ilike(users.name, `%${search}%`), ilike(users.email, `%${search}%`))
+      );
+
+    if (role && role !== 'all') conditions.push(eq(users.role, role as any));
+
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const { count } = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(users)
+      .where(whereClause)
+      .then(res => res[0]);
+
     const allUsers = await db
       .select()
       .from(users)
+      .where(whereClause)
+      .limit(limit)
+      .offset(offset)
       .orderBy(desc(users.createdAt));
 
     // Remove passwords from response
@@ -15,7 +41,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      data: usersWithoutPasswords
+      data: usersWithoutPasswords,
+      count: Number(count)
     });
   } catch (error) {
     console.error('Error fetching users:', error);

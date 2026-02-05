@@ -8,16 +8,19 @@ import {
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import type { User } from '@/services/users/apiUsers';
+import type { UserDetail } from '@/services/users/apiUsers';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
+import { useNavigate } from 'react-router';
 
 interface FacultyTableProps {
-  users: User[];
+  users: UserDetail[];
   isLoading: boolean;
 }
 
 export const FacultyTable = ({ users, isLoading }: FacultyTableProps) => {
+  const navigate = useNavigate();
+
   if (isLoading) return <Spinner size="xl" />;
 
   if (users.length === 0) {
@@ -82,7 +85,7 @@ export const FacultyTable = ({ users, isLoading }: FacultyTableProps) => {
                   variant="outline"
                   size="sm"
                   className="rounded-lg h-8 px-4 font-bold border-slate-200 text-slate-600 hover:bg-slate-50"
-                  onClick={() => console.log('View user:', user.id)}
+                  onClick={() => navigate(`/faculty/${user.id}`)}
                 >
                   View
                 </Button>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import AppLayout from './ui/AppLayout';
 import Departments from './pages/Departments';
 import { Toaster } from 'react-hot-toast';
@@ -9,6 +9,11 @@ import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Faculty from './pages/Faculty';
 import Classes from './pages/Classes';
+import Enrollments from './pages/Enrollments';
+import ClassShow from './pages/ClassShow';
+import DepartmentShow from './pages/DepartmentShow';
+import SubjectShow from './pages/SubjectShow';
+import FacultyShow from './pages/FacultyShow';
 
 const App = () => {
   return (
@@ -21,8 +26,12 @@ const App = () => {
               <Route path="/departments" element={<Departments />} />
               <Route path="/subjects" element={<Subjects />} />
               <Route path="/faculty" element={<Faculty />} />
-              <Route path="/enrollments" element={<div>Enrollments</div>} />
+              <Route path="/enrollments" element={<Enrollments />} />
               <Route path="/classes" element={<Classes />} />
+              <Route path="/classes/:id" element={<ClassShow />} />
+              <Route path="/departments/:id" element={<DepartmentShow />} />
+              <Route path="/subjects/:id" element={<SubjectShow />} />
+              <Route path="/faculty/:id" element={<FacultyShow />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />} />
