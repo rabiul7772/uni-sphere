@@ -18,7 +18,14 @@ const DepartmentShow = () => {
 
   const { data: department, isPending, error } = useDepartment(id!);
 
-  if (error) return <ErrorMessage message={error.message} />;
+  if (error && !isPending)
+    return (
+      <ErrorMessage
+        className="mx-8 mt-8"
+        title="Failed to load department"
+        message="The department could not be found."
+      />
+    );
 
   const subjects = department?.subjects || [];
   const classes = subjects.flatMap(sub => sub.classes);
