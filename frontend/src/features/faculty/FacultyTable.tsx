@@ -21,7 +21,7 @@ interface FacultyTableProps {
 export const FacultyTable = ({ users, isLoading }: FacultyTableProps) => {
   const navigate = useNavigate();
 
-  if (isLoading) return <Spinner size="xl" />;
+  if (isLoading) return <Spinner size="xl" className="min-h-[200px]" />;
 
   if (users.length === 0) {
     return (

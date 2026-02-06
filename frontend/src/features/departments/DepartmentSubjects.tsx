@@ -11,6 +11,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 interface Subject {
   id: string;
   name: string;
@@ -20,9 +22,13 @@ interface Subject {
 
 interface DepartmentSubjectsProps {
   subjects: Subject[];
+  isLoading?: boolean;
 }
 
-const DepartmentSubjects = ({ subjects }: DepartmentSubjectsProps) => {
+const DepartmentSubjects = ({
+  subjects,
+  isLoading = false
+}: DepartmentSubjectsProps) => {
   const navigate = useNavigate();
 
   return (
@@ -52,37 +58,54 @@ const DepartmentSubjects = ({ subjects }: DepartmentSubjectsProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subjects.map(subject => (
-              <TableRow
-                key={subject.id}
-                className="border-slate-50 hover:bg-slate-50/50"
-              >
-                <TableCell className="py-4">
-                  <Badge
-                    variant="secondary"
-                    className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 font-medium"
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <TableRow key={i} className="border-slate-50">
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-32" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-64" />
+                    </TableCell>
+                    <TableCell className="text-right pr-8">
+                      <Skeleton className="ml-auto h-8 w-16" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : subjects.map(subject => (
+                  <TableRow
+                    key={subject.id}
+                    className="border-slate-50 hover:bg-slate-50/50"
                   >
-                    {subject.code}
-                  </Badge>
-                </TableCell>
-                <TableCell className="font-semibold text-slate-700">
-                  {subject.name}
-                </TableCell>
-                <TableCell className="text-slate-500 max-w-[400px] truncate">
-                  {subject.description}
-                </TableCell>
-                <TableCell className="text-right pr-8">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
-                    onClick={() => navigate(`/subjects/${subject.id}`)}
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                    <TableCell className="py-4">
+                      <Badge
+                        variant="secondary"
+                        className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 font-medium"
+                      >
+                        {subject.code}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-semibold text-slate-700">
+                      {subject.name}
+                    </TableCell>
+                    <TableCell className="text-slate-500 max-w-[400px] truncate">
+                      {subject.description}
+                    </TableCell>
+                    <TableCell className="text-right pr-8">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
+                        onClick={() => navigate(`/subjects/${subject.id}`)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </CardContent>

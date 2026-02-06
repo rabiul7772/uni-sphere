@@ -6,13 +6,38 @@ import Modal from '@/ui/Modal';
 import EditDepartmentForm from './EditDepartmentForm';
 import type { Department } from '@/services/departments/apiDepartments';
 
+import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
+
 interface DepartmentHeaderProps {
-  department: Department;
+  department?: Department;
+  isLoading?: boolean;
 }
 
-const DepartmentHeader = ({ department }: DepartmentHeaderProps) => {
+const DepartmentHeader = ({
+  department,
+  isLoading = false
+}: DepartmentHeaderProps) => {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <SkeletonList count={4} className="h-4 w-4" />
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-8 w-64" />
+          </div>
+          <Skeleton className="h-10 w-24" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!department) return null;
 
   return (
     <div className="space-y-4">

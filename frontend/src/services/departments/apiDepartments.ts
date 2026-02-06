@@ -48,8 +48,26 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export const getDepartments = async (): Promise<Department[]> => {
-  const response = await api.get<ApiResponse<Department[]>>('/departments');
+export interface GetDepartmentsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface DepartmentsResponse {
+  data: Department[];
+  count: number;
+}
+
+export const getDepartments = async (
+  params?: GetDepartmentsParams
+): Promise<DepartmentsResponse> => {
+  const response = await api.get<ApiResponse<DepartmentsResponse>>(
+    '/departments',
+    {
+      params
+    }
+  );
   return response.data.data;
 };
 

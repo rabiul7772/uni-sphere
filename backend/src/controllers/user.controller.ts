@@ -22,11 +22,12 @@ export const getUsers = async (req: Request, res: Response) => {
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-    const { count } = await db
+    const [total] = await db
       .select({ count: sql<number>`count(*)` })
       .from(users)
-      .where(whereClause)
-      .then(res => res[0]);
+      .where(whereClause);
+
+    const count = total?.count ?? 0;
 
     const allUsers = await db
       .select()

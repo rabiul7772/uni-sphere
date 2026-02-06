@@ -9,8 +9,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+// import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router';
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Person {
   id: string;
@@ -25,9 +27,14 @@ interface Person {
 interface PeopleTableProps {
   title: string;
   people: Person[];
+  isLoading?: boolean;
 }
 
-const PeopleTable = ({ title, people }: PeopleTableProps) => {
+const PeopleTable = ({
+  title,
+  people,
+  isLoading = false
+}: PeopleTableProps) => {
   const navigate = useNavigate();
 
   return (
@@ -47,7 +54,27 @@ const PeopleTable = ({ title, people }: PeopleTableProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {people.length === 0 ? (
+            {isLoading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <TableRow key={i} className="border-slate-50">
+                  <TableCell className="py-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <div className="flex flex-col gap-1">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-3 w-32" />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-20" />
+                  </TableCell>
+                  <TableCell className="text-right pr-8">
+                    <Skeleton className="ml-auto h-8 w-16" />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : people.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={3}

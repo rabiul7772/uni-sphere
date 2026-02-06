@@ -12,6 +12,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 interface Class {
   id: string;
   name: string;
@@ -35,9 +37,13 @@ interface Subject {
 
 interface DepartmentClassesProps {
   subjects: Subject[];
+  isLoading?: boolean;
 }
 
-const DepartmentClasses = ({ subjects }: DepartmentClassesProps) => {
+const DepartmentClasses = ({
+  subjects,
+  isLoading = false
+}: DepartmentClassesProps) => {
   const navigate = useNavigate();
   const classes = subjects.flatMap(sub => sub.classes);
 
@@ -67,58 +73,84 @@ const DepartmentClasses = ({ subjects }: DepartmentClassesProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {classes.map(cls => (
-              <TableRow
-                key={cls.id}
-                className="border-slate-50 hover:bg-slate-50/50"
-              >
-                <TableCell className="py-4 font-semibold text-slate-700">
-                  {cls.name}
-                </TableCell>
-                <TableCell className="text-slate-500">
-                  {cls.subject.name} ({cls.subject.code})
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={cls.teacher.avatarUrl} />
-                      <AvatarFallback className="bg-slate-100 text-xs text-slate-600">
-                        {cls.teacher?.fullName
-                          ?.split(' ')
-                          .map(n => n[0])
-                          .join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-slate-700">
-                        {cls.teacher?.fullName}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        {cls.teacher?.email}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    variant="secondary"
-                    className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 font-medium"
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <TableRow key={i} className="border-slate-50">
+                    <TableCell className="py-4">
+                      <Skeleton className="h-6 w-32" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-40" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                        <div className="flex flex-col gap-1">
+                          <Skeleton className="h-4 w-24" />
+                          <Skeleton className="h-3 w-32" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-20" />
+                    </TableCell>
+                    <TableCell className="text-right pr-8">
+                      <Skeleton className="ml-auto h-8 w-16" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : classes.map(cls => (
+                  <TableRow
+                    key={cls.id}
+                    className="border-slate-50 hover:bg-slate-50/50"
                   >
-                    {cls.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right pr-8">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
-                    onClick={() => navigate(`/classes/${cls.id}`)}
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                    <TableCell className="py-4 font-semibold text-slate-700">
+                      {cls.name}
+                    </TableCell>
+                    <TableCell className="text-slate-500">
+                      {cls.subject.name} ({cls.subject.code})
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={cls.teacher.avatarUrl} />
+                          <AvatarFallback className="bg-slate-100 text-xs text-slate-600">
+                            {cls.teacher?.fullName
+                              ?.split(' ')
+                              .map(n => n[0])
+                              .join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-slate-700">
+                            {cls.teacher?.fullName}
+                          </span>
+                          <span className="text-xs text-slate-400">
+                            {cls.teacher?.email}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant="secondary"
+                        className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 font-medium"
+                      >
+                        {cls.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right pr-8">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
+                        onClick={() => navigate(`/classes/${cls.id}`)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </CardContent>

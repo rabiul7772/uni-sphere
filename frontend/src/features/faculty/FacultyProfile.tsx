@@ -1,13 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { UserDetail } from '@/services/users/apiUsers';
 
 interface FacultyProfileProps {
-  user: UserDetail;
+  user?: UserDetail;
+  isLoading?: boolean;
 }
 
-const FacultyProfile = ({ user }: FacultyProfileProps) => {
+const FacultyProfile = ({ user, isLoading = false }: FacultyProfileProps) => {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'teacher':
@@ -20,6 +22,30 @@ const FacultyProfile = ({ user }: FacultyProfileProps) => {
         return 'bg-slate-50 text-slate-600 border-slate-100';
     }
   };
+
+  if (isLoading) {
+    return (
+      <Card className="border-slate-100 shadow-sm">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-lg font-bold text-slate-900">
+            Profile
+          </CardTitle>
+          <Skeleton className="h-5 w-16 rounded-lg" />
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-16 w-16 rounded-full" />
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-4 w-48" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <Card className="border-slate-100 shadow-sm">
