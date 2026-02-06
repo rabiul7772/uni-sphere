@@ -1,14 +1,32 @@
 import { useNavigate } from 'react-router';
-import { ArrowLeft, Home, ChevronRight, RefreshCw, Pencil } from 'lucide-react';
+import { ArrowLeft, Home, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
 import type { UserDetail } from '@/services/users/apiUsers';
 
 interface FacultyHeaderProps {
-  user: UserDetail;
+  user?: UserDetail;
+  isLoading?: boolean;
 }
 
-const FacultyHeader = ({ user }: FacultyHeaderProps) => {
+const FacultyHeader = ({ user, isLoading = false }: FacultyHeaderProps) => {
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <SkeletonList count={4} className="h-4 w-4" />
+        </div>
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-8 w-48" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="space-y-4">
@@ -41,7 +59,7 @@ const FacultyHeader = ({ user }: FacultyHeaderProps) => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
 
-          <h1 className="text-2xl font-bold text-slate-900">{user?.name}</h1>
+          <h1 className="text-2xl font-bold text-slate-900">{user.name}</h1>
         </div>
       </div>
     </div>

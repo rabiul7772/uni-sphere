@@ -4,14 +4,18 @@ import {
   getDepartment,
   getDepartments,
   createDepartment as createDepartmentApi,
-  updateDepartment as updateDepartmentApi
+  updateDepartment as updateDepartmentApi,
+  type DepartmentsResponse,
+  type GetDepartmentsParams
 } from '@/services/departments/apiDepartments';
 import toast from 'react-hot-toast';
 
-export const useDepartments = () => {
-  return useQuery<Department[], Error>({
-    queryKey: ['departments'],
-    queryFn: getDepartments
+export const useDepartments = (params?: GetDepartmentsParams) => {
+  const { page, limit, search } = params || {};
+
+  return useQuery<DepartmentsResponse, Error>({
+    queryKey: ['departments', page, limit, search],
+    queryFn: () => getDepartments(params)
   });
 };
 

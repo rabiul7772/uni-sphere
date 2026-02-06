@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
 import { departments, type NewDepartment } from '../db/schema/app.js';
-import { eq } from 'drizzle-orm';
+import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 const updateDepartmentSchema = z.object({
@@ -14,19 +14,40 @@ const updateDepartmentSchema = z.object({
 
 export const getAllDepartments = async (req: Request, res: Response) => {
   try {
-    const data = await db.query.departments.findMany({
-      with: {
-        subjects: true
-      }
-    });
+    const { page = '1', limit = '10', search = '' } = req.query;
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const offset = (pageNum - 1) * limitNum;
 
-    if (data.length === 0)
-      return res.status(404).json({ message: 'Departments not found' });
+    const whereClause = search
+      ? or(
+          ilike(departments.name, `%${search}%`),
+          ilike(departments.code, `%${search}%`)
+        )
+      : undefined;
+
+    const [total] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(departments)
+      .where(whereClause);
+
+    const count = total?.count ?? 0;
+
+    const allDepartments = await db
+      .select()
+      .from(departments)
+      .where(whereClause)
+      .limit(limitNum)
+      .offset(offset)
+      .orderBy(desc(departments.createdAt));
 
     res.status(200).json({
       success: true,
       message: 'Departments fetched successfully',
-      data
+      data: {
+        data: allDepartments,
+        count: Number(count)
+      }
     });
   } catch (error) {
     console.error(error);

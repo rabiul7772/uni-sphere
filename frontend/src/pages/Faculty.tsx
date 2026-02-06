@@ -14,7 +14,7 @@ const Faculty = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
 
-  const { data, isPending } = useUsers(
+  const { data, isFetching } = useUsers(
     {
       page,
       limit: PAGE_SIZE,
@@ -23,6 +23,8 @@ const Faculty = () => {
     },
     { keepPreviousData: true }
   );
+
+  const totalCount = data?.count || 0;
 
   const handlePageChange = (newPage: number) => {
     setSearchParams({ page: newPage.toString() });
@@ -55,14 +57,16 @@ const Faculty = () => {
         />
       </div>
 
-      <FacultyTable users={data?.data || []} isLoading={isPending} />
+      <FacultyTable users={data?.data || []} isLoading={isFetching} />
 
-      <Pagination
-        currentPage={page}
-        totalCount={data?.count || 0}
-        pageSize={PAGE_SIZE}
-        onPageChange={handlePageChange}
-      />
+      {totalCount > PAGE_SIZE && (
+        <Pagination
+          currentPage={page}
+          totalCount={totalCount}
+          pageSize={PAGE_SIZE}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

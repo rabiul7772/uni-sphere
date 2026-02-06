@@ -1,25 +1,41 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Pagination from '@/components/shared/Pagination';
+import { PAGE_SIZE } from '@/constants';
 import DepartmentBreadcrumb from '@/features/departments/Breadcrumb';
 import DepartmentHeader from '@/features/departments/Header';
 import DepartmentTable from '@/features/departments/Table';
-import Pagination from '@/features/departments/Pagination';
 import { useDepartments } from '@/hooks/departments/useDepartments';
 
-import { Spinner } from '@/components/ui/spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
 
 const Departments = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') || '1');
   const [searchTerm, setSearchTerm] = useState('');
-  const { data: departments = [], isPending, error } = useDepartments();
 
-  // Filter departments by name or code
-  const filteredDepartments = departments.filter(
-    dept =>
-      dept.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      dept.code.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const {
+    data: response,
+    isPending,
+    error
+  } = useDepartments({
+    page,
+    limit: PAGE_SIZE,
+    search: searchTerm
+  });
 
-  if (isPending) return <Spinner size="xl" className="min-h-[200px]" />;
+  const departments = response?.data || [];
+  const totalCount = response?.count || 0;
+
+  const handlePageChange = (newPage: number) => {
+    setSearchParams({ page: newPage.toString() });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setSearchParams({ page: '1' }); // Reset to page 1 on search
+  };
 
   if (error)
     return (
@@ -33,13 +49,21 @@ const Departments = () => {
       {/* Header with Search */}
       <DepartmentHeader
         searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchChange={handleSearchChange}
       />
 
       {/* Table */}
       <div className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden">
-        <DepartmentTable departments={filteredDepartments} />
-        <Pagination />
+        <DepartmentTable departments={departments} isLoading={isPending} />
+
+        {totalCount > PAGE_SIZE && (
+          <Pagination
+            currentPage={page}
+            totalCount={totalCount}
+            pageSize={PAGE_SIZE}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </div>
   );
