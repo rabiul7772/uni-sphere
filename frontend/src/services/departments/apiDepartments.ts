@@ -96,3 +96,21 @@ export const updateDepartment = async (
   );
   return response.data.data;
 };
+
+// Lightweight type for dropdowns (only id and name)
+export interface DepartmentListItem {
+  id: string;
+  name: string;
+}
+
+// Fetch all departments for dropdowns (no pagination)
+export const getDepartmentsList = async (): Promise<DepartmentListItem[]> => {
+  const response = await api.get<ApiResponse<DepartmentsResponse>>(
+    '/departments',
+    { params: { limit: 1000 } }
+  );
+  return response.data.data.data.map(dept => ({
+    id: dept.id,
+    name: dept.name
+  }));
+};

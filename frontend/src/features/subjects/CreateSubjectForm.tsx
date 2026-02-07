@@ -13,7 +13,7 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { useCreateSubject } from '@/hooks/subjects/useSubjects';
-import { useDepartments } from '@/hooks/departments/useDepartments';
+import { useDepartmentsList } from '@/hooks/departments/useDepartments';
 import { Spinner } from '@/components/ui/spinner';
 
 const subjectSchema = z.object({
@@ -39,7 +39,7 @@ export const CreateSubjectForm = ({
   onSuccess,
   onCancel
 }: CreateSubjectFormProps) => {
-  const { data: departments, isPending: isLoadingDepts } = useDepartments();
+  const { data: departments, isPending: isLoadingDepts } = useDepartmentsList();
   const { mutate, isPending } = useCreateSubject();
 
   const {

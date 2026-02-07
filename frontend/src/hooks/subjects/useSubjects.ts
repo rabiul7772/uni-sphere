@@ -5,14 +5,18 @@ import {
   createSubject as createSubjectApi,
   updateSubject as updateSubjectApi,
   type Subject,
-  type NewSubject
+  type NewSubject,
+  type SubjectsResponse,
+  type GetSubjectsParams
 } from '@/services/subjects/apiSubjects';
 import { toast } from 'react-hot-toast';
 
-export const useSubjects = () => {
-  return useQuery<Subject[], Error>({
-    queryKey: ['subjects'],
-    queryFn: getSubjects
+export const useSubjects = (params?: GetSubjectsParams) => {
+  const { page, limit, search } = params || {};
+
+  return useQuery<SubjectsResponse, Error>({
+    queryKey: ['subjects', page, limit, search],
+    queryFn: () => getSubjects(params)
   });
 };
 
