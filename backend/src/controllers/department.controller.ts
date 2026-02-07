@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
-import { departments, type NewDepartment } from '../db/schema/app.js';
+import { departments, subjects, type NewDepartment } from '../db/schema/app.js';
 import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -34,12 +34,29 @@ export const getAllDepartments = async (req: Request, res: Response) => {
     const count = total?.count ?? 0;
 
     const allDepartments = await db
-      .select()
+      .select({
+        id: departments.id,
+        name: departments.name,
+        code: departments.code,
+        description: departments.description,
+        createdAt: departments.createdAt,
+        updatedAt: departments.updatedAt,
+        subjects: sql<number>`CAST(COUNT(${subjects.id}) AS INTEGER)`
+      })
       .from(departments)
+      .leftJoin(subjects, eq(departments.id, subjects.departmentId))
       .where(whereClause)
+      .groupBy(
+        departments.id,
+        departments.name,
+        departments.code,
+        departments.description,
+        departments.createdAt,
+        departments.updatedAt
+      )
+      .orderBy(desc(departments.createdAt))
       .limit(limitNum)
-      .offset(offset)
-      .orderBy(desc(departments.createdAt));
+      .offset(offset);
 
     res.status(200).json({
       success: true,
