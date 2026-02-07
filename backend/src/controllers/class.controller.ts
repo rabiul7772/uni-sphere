@@ -7,11 +7,40 @@ import {
   users,
   departments
 } from '../db/schema/app.js';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 
 export const getClasses = async (req: Request, res: Response) => {
   try {
-    const allClasses = await db
+    const { page = '1', limit = '10', search = '' } = req.query;
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const offset = (pageNum - 1) * limitNum;
+
+    // Build where clause for search
+    const whereClause = search
+      ? or(
+          ilike(classes.name, `%${search}%`),
+          ilike(subjects.name, `%${search}%`),
+          ilike(users.name, `%${search}%`)
+        )
+      : undefined;
+
+    // Get total count with search filter
+    const countQuery = db
+      .select({ count: sql<number>`count(*)` })
+      .from(classes)
+      .leftJoin(subjects, eq(classes.subjectId, subjects.id))
+      .leftJoin(users, eq(classes.teacherId, users.id));
+
+    if (whereClause) {
+      countQuery.where(whereClause);
+    }
+
+    const [total] = await countQuery;
+    const count = total?.count ?? 0;
+
+    // Get paginated classes
+    const query = db
       .select({
         id: classes.id,
         name: classes.name,
@@ -32,11 +61,22 @@ export const getClasses = async (req: Request, res: Response) => {
       .from(classes)
       .leftJoin(subjects, eq(classes.subjectId, subjects.id))
       .leftJoin(users, eq(classes.teacherId, users.id))
-      .orderBy(desc(classes.createdAt));
+      .orderBy(desc(classes.createdAt))
+      .limit(limitNum)
+      .offset(offset);
+
+    if (whereClause) {
+      query.where(whereClause);
+    }
+
+    const allClasses = await query;
 
     res.status(200).json({
       success: true,
-      data: allClasses
+      data: {
+        data: allClasses,
+        count: Number(count)
+      }
     });
   } catch (error) {
     console.error('Error fetching classes:', error);

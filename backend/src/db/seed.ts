@@ -848,22 +848,6 @@ async function seed() {
     }
   }
 
-  if (subjectsToInsert.length === 0) {
-    console.log('No subjects to insert.');
-    await pool.end();
-    return;
-  }
-
-  console.log(`\nInserting ${subjectsToInsert.length} subjects...`);
-
-  await db.insert(subjects).values(subjectsToInsert);
-
-  console.log('Subjects seeded successfully!');
-  console.log('\nInserted subjects:');
-  subjectsToInsert.forEach(s => {
-    console.log(`  - ${s.code}: ${s.name}`);
-  });
-
   await pool.end();
 }
 
