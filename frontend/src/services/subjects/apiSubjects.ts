@@ -49,8 +49,23 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export const getSubjects = async (): Promise<Subject[]> => {
-  const response = await api.get<ApiResponse<Subject[]>>('/subjects');
+export interface GetSubjectsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface SubjectsResponse {
+  data: Subject[];
+  count: number;
+}
+
+export const getSubjects = async (
+  params?: GetSubjectsParams
+): Promise<SubjectsResponse> => {
+  const response = await api.get<ApiResponse<SubjectsResponse>>('/subjects', {
+    params
+  });
   return response.data.data;
 };
 

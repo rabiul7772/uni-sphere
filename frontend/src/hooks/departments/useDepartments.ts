@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   type Department,
+  type DepartmentListItem,
   getDepartment,
   getDepartments,
+  getDepartmentsList,
   createDepartment as createDepartmentApi,
   updateDepartment as updateDepartmentApi,
   type DepartmentsResponse,
@@ -23,6 +25,14 @@ export const useDepartment = (id: string | number) => {
   return useQuery<Department, Error>({
     queryKey: ['department', String(id)],
     queryFn: () => getDepartment(String(id))
+  });
+};
+
+// Lightweight hook for dropdowns (fetches all departments with only id and name)
+export const useDepartmentsList = () => {
+  return useQuery<DepartmentListItem[], Error>({
+    queryKey: ['departments-list'],
+    queryFn: getDepartmentsList
   });
 };
 

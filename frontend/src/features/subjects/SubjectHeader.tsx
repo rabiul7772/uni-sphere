@@ -5,14 +5,38 @@ import { useState } from 'react';
 import Modal from '@/ui/Modal';
 import EditSubjectForm from './EditSubjectForm';
 import type { Subject } from '@/services/subjects/apiSubjects';
+import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
 
 interface SubjectHeaderProps {
-  subject: Subject;
+  subject?: Subject;
+  isLoading?: boolean;
 }
 
-const SubjectHeader = ({ subject }: SubjectHeaderProps) => {
+const SubjectHeader = ({
+  subject,
+  isLoading = false
+}: SubjectHeaderProps) => {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-2">
+          <SkeletonList count={4} className="h-4 w-4" />
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-8 w-64" />
+          </div>
+          <Skeleton className="h-10 w-24" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!subject) return null;
 
   return (
     <div className="space-y-4">

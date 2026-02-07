@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import { db } from '../db/index.js';
 import { NewSubject, subjects } from '../db/schema/app.js';
-import { eq } from 'drizzle-orm';
+import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 const updateSubjectSchema = z.object({
@@ -14,20 +14,42 @@ const updateSubjectSchema = z.object({
 
 export const getAllSubjects = async (req: Request, res: Response) => {
   try {
-    const data = await db.query.subjects.findMany({
+    const { page = '1', limit = '10', search = '' } = req.query;
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const offset = (pageNum - 1) * limitNum;
+
+    const whereClause = search
+      ? or(
+          ilike(subjects.name, `%${search}%`),
+          ilike(subjects.code, `%${search}%`)
+        )
+      : undefined;
+
+    const [total] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(subjects)
+      .where(whereClause);
+
+    const count = total?.count ?? 0;
+
+    const allSubjects = await db.query.subjects.findMany({
+      where: whereClause,
       with: {
         department: true
-      }
+      },
+      limit: limitNum,
+      offset: offset,
+      orderBy: desc(subjects.createdAt)
     });
-
-    if (data.length === 0) {
-      return res.status(404).json({ message: 'Subjects not found' });
-    }
 
     res.status(200).json({
       success: true,
       message: 'Subjects fetched successfully',
-      data
+      data: {
+        data: allSubjects,
+        count: Number(count)
+      }
     });
   } catch (error) {
     console.error(error);
