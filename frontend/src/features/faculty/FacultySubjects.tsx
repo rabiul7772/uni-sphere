@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -10,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router';
+import Pagination from '@/components/shared/Pagination';
+import { SUB_TABLE_PAGE_SIZE } from '@/constants';
 
 interface Subject {
   id: number;
@@ -34,6 +37,18 @@ const FacultySubjects = ({
   isLoading = false
 }: FacultySubjectsProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalSubjects = subjects.length;
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
+  const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
+  const paginatedSubjects = subjects.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   if (isLoading) {
     return (
@@ -50,9 +65,15 @@ const FacultySubjects = ({
             <TableHeader>
               <TableRow className="border-slate-50 hover:bg-transparent">
                 <TableHead className="font-bold text-slate-900">Code</TableHead>
-                <TableHead className="font-bold text-slate-900">Subject</TableHead>
-                <TableHead className="font-bold text-slate-900">Department</TableHead>
-                <TableHead className="text-right font-bold text-slate-900 pr-8">Details</TableHead>
+                <TableHead className="font-bold text-slate-900">
+                  Subject
+                </TableHead>
+                <TableHead className="font-bold text-slate-900">
+                  Department
+                </TableHead>
+                <TableHead className="text-right font-bold text-slate-900 pr-8">
+                  Details
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -119,7 +140,7 @@ const FacultySubjects = ({
                 </TableCell>
               </TableRow>
             ) : (
-              subjects.map(subject => (
+              paginatedSubjects.map(subject => (
                 <TableRow
                   key={subject.id}
                   className="border-slate-50 hover:bg-slate-50/50"
@@ -150,6 +171,17 @@ const FacultySubjects = ({
             )}
           </TableBody>
         </Table>
+
+        {totalSubjects > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalSubjects}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

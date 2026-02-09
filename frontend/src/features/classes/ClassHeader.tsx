@@ -15,10 +15,14 @@ import { CreateClassForm } from './CreateClassForm';
 import type { Class } from '@/services/classes/apiClasses';
 
 interface ClassHeaderProps {
-  classData: Class;
+  classData?: Class;
+  isLoading?: boolean;
 }
 
-export default function ClassHeader({ classData }: ClassHeaderProps) {
+export default function ClassHeader({
+  classData,
+  isLoading
+}: ClassHeaderProps) {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -62,6 +66,7 @@ export default function ClassHeader({ classData }: ClassHeaderProps) {
             variant="outline"
             size="sm"
             onClick={() => setIsEditModalOpen(true)}
+            disabled={isLoading || !classData}
           >
             <Edit className="mr-2 h-4 w-4" />
             Edit
@@ -69,17 +74,19 @@ export default function ClassHeader({ classData }: ClassHeaderProps) {
         </div>
       </div>
 
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        title="Edit Class"
-      >
-        <CreateClassForm
-          initialData={classData}
-          onSuccess={() => setIsEditModalOpen(false)}
-          onCancel={() => setIsEditModalOpen(false)}
-        />
-      </Modal>
+      {classData && (
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          title="Edit Class"
+        >
+          <CreateClassForm
+            initialData={classData}
+            onSuccess={() => setIsEditModalOpen(false)}
+            onCancel={() => setIsEditModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

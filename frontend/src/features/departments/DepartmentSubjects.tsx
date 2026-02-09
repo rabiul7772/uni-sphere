@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -10,6 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router';
+import Pagination from '@/components/shared/Pagination';
+import { SUB_TABLE_PAGE_SIZE } from '@/constants';
 
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -30,6 +33,18 @@ const DepartmentSubjects = ({
   isLoading = false
 }: DepartmentSubjectsProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalSubjects = subjects.length;
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
+  const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
+  const paginatedSubjects = subjects.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Card className="border-slate-100 shadow-sm">
@@ -75,7 +90,7 @@ const DepartmentSubjects = ({
                     </TableCell>
                   </TableRow>
                 ))
-              : subjects.map(subject => (
+              : paginatedSubjects.map(subject => (
                   <TableRow
                     key={subject.id}
                     className="border-slate-50 hover:bg-slate-50/50"
@@ -108,6 +123,17 @@ const DepartmentSubjects = ({
                 ))}
           </TableBody>
         </Table>
+
+        {totalSubjects > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalSubjects}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

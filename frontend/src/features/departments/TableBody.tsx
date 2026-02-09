@@ -1,10 +1,10 @@
 import { TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import type { Department } from '@/services/departments/apiDepartments';
+import type { DepartmentSummary } from '@/services/departments/apiDepartments';
 import { Link } from 'react-router';
 
 interface DepartmentTableBodyProps {
-  departments: Department[];
+  departments: DepartmentSummary[];
 }
 
 const DepartmentTableBody = ({ departments }: DepartmentTableBodyProps) => {
@@ -22,7 +22,7 @@ const DepartmentTableBody = ({ departments }: DepartmentTableBodyProps) => {
             {dept.name}
           </TableCell>
           <TableCell className="font-semibold text-slate-700 text-sm text-center">
-            {Array.isArray(dept.subjects) ? dept.subjects.length : 0}
+            {dept.subjects}
           </TableCell>
           <TableCell className="text-slate-500 max-w-[500px] truncate text-sm text-center">
             {dept.description || '-'}

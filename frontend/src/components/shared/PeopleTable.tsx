@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,10 +10,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-// import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router';
-
 import { Skeleton } from '@/components/ui/skeleton';
+import Pagination from './Pagination';
+import { SUB_TABLE_PAGE_SIZE } from '@/constants';
 
 interface Person {
   id: string;
@@ -36,11 +37,26 @@ const PeopleTable = ({
   isLoading = false
 }: PeopleTableProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPeople = people.length;
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
+  const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
+  const paginatedPeople = people.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Card className="border-slate-100 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-lg font-bold">{title}</CardTitle>
+        <span className="text-xs font-semibold text-slate-400">
+          {totalPeople}
+        </span>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -74,7 +90,7 @@ const PeopleTable = ({
                   </TableCell>
                 </TableRow>
               ))
-            ) : people.length === 0 ? (
+            ) : totalPeople === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={3}
@@ -84,7 +100,7 @@ const PeopleTable = ({
                 </TableCell>
               </TableRow>
             ) : (
-              people.map(person => (
+              paginatedPeople.map(person => (
                 <TableRow
                   key={person.id}
                   className="border-slate-50 hover:bg-slate-50/50"
@@ -128,6 +144,17 @@ const PeopleTable = ({
             )}
           </TableBody>
         </Table>
+
+        {totalPeople > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalPeople}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

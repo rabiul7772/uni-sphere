@@ -28,7 +28,7 @@ export const ClassFormActions = ({
       <Button
         type="submit"
         disabled={isLoading}
-        className="flex-[2] h-11 bg-emerald-400 hover:bg-emerald-500 text-emerald-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-100"
+        className="flex-2 h-11 bg-emerald-400 hover:bg-emerald-500 text-emerald-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-100"
       >
         {isLoading ? (
           <div className="flex items-center gap-2">
