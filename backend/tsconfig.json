@@ -9,8 +9,8 @@
     "moduleResolution": "NodeNext",
 
     /* Project structure */
-    "rootDir": "src",
     "outDir": "dist",
+    "rootDir": ".",
 
     /* Type safety */
     "strict": true,
@@ -30,5 +30,5 @@
     /* Environment types */
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", "config"]
 }
