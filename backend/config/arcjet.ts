@@ -1,7 +1,11 @@
 import arcjet, { detectBot, shield, tokenBucket } from '@arcjet/node';
 
+if (!process.env.ARCJET_KEY) {
+  throw new Error('ARCJET_KEY is not defined in .env file');
+}
+
 const aj = arcjet({
-  key: process.env.ARCJET_KEY!,
+  key: process.env.ARCJET_KEY,
 
   rules: [
     // Shield protects your app from common attacks e.g. SQL injection
