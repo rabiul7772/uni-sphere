@@ -29,7 +29,10 @@ interface EnrollmentFormProps {
 
 export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
   const { data: currentUser } = useUser();
-  const { classes, isPending: classesLoading } = useClasses();
+  const { data: classesData, isPending: classesLoading } = useClasses({
+    limit: 1000
+  });
+  const classes = classesData?.data || [];
   const { mutate: enroll, isPending: isEnrolling } = useEnrollInClass();
 
   const {

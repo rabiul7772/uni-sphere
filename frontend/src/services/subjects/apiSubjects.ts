@@ -89,3 +89,20 @@ export const updateSubject = async (
   );
   return response.data.data;
 };
+
+// Lightweight type for dropdowns (only id and name)
+export interface SubjectListItem {
+  id: string;
+  name: string;
+}
+
+// Fetch all subjects for dropdowns (no pagination)
+export const getSubjectsList = async (): Promise<SubjectListItem[]> => {
+  const response = await api.get<ApiResponse<SubjectsResponse>>('/subjects', {
+    params: { limit: 1000 }
+  });
+  return response.data.data.data.map(subj => ({
+    id: subj.id,
+    name: subj.name
+  }));
+};

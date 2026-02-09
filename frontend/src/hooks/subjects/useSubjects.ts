@@ -2,11 +2,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getSubject,
   getSubjects,
+  getSubjectsList,
   createSubject as createSubjectApi,
   updateSubject as updateSubjectApi,
   type Subject,
   type NewSubject,
   type SubjectsResponse,
+  type SubjectListItem,
   type GetSubjectsParams
 } from '@/services/subjects/apiSubjects';
 import { toast } from 'react-hot-toast';
@@ -25,6 +27,14 @@ export const useSubject = (id: string | number) => {
     queryKey: ['subject', String(id)],
     queryFn: () => getSubject(String(id)),
     enabled: !!id
+  });
+};
+
+// Lightweight hook for dropdowns (fetches all subjects with only id and name)
+export const useSubjectsList = () => {
+  return useQuery<SubjectListItem[], Error>({
+    queryKey: ['subjects-list'],
+    queryFn: getSubjectsList
   });
 };
 

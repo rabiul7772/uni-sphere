@@ -1,5 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUser, getUsers, type UserDetail } from '@/services/users/apiUsers';
+import {
+  getUser,
+  getUsers,
+  getTeachersList,
+  type UserDetail,
+  type TeacherListItem
+} from '@/services/users/apiUsers';
 
 export const useUsers = (
   params?: {
@@ -24,5 +30,13 @@ export const useUser = (id: string | number) => {
     queryKey: ['user', String(id)],
     queryFn: () => getUser(String(id)),
     enabled: !!id
+  });
+};
+
+// Lightweight hook for dropdowns (fetches all teachers with only id and name)
+export const useTeachersList = () => {
+  return useQuery<TeacherListItem[], Error>({
+    queryKey: ['teachers-list'],
+    queryFn: getTeachersList
   });
 };

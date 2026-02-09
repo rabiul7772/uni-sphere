@@ -37,9 +37,20 @@ export interface Class {
   }[];
 }
 
+export interface GetClassesParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface ClassesResponse {
+  data: Class[];
+  count: number;
+}
+
 export interface ClassResponse {
   success: boolean;
-  data: Class[];
+  data: ClassesResponse;
 }
 
 export interface SingleClassResponse {
@@ -47,8 +58,10 @@ export interface SingleClassResponse {
   data: Class;
 }
 
-export const getClasses = async (): Promise<Class[]> => {
-  const response = await api.get<ClassResponse>('/classes');
+export const getClasses = async (
+  params: GetClassesParams = {}
+): Promise<ClassesResponse> => {
+  const response = await api.get<ClassResponse>('/classes', { params });
   return response.data.data;
 };
 

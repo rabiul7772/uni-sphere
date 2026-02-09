@@ -1,5 +1,6 @@
 export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 export const PAGE_SIZE = 10;
+export const SUB_TABLE_PAGE_SIZE = 6;
 
 import {
   Building2,

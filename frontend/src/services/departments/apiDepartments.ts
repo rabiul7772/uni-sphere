@@ -1,5 +1,17 @@
 import api from '@/lib/axios';
 
+// Department with subjects count (used in list view)
+export interface DepartmentSummary {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  subjects: number; // Count of subjects
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// Department with full subjects array (used in detail view)
 export interface Department {
   id: string;
   code: string;
@@ -55,7 +67,7 @@ export interface GetDepartmentsParams {
 }
 
 export interface DepartmentsResponse {
-  data: Department[];
+  data: DepartmentSummary[];
   count: number;
 }
 

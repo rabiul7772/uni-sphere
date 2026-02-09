@@ -5,6 +5,8 @@ import FacultyProfile from '@/features/faculty/FacultyProfile';
 import FacultyDepartments from '@/features/faculty/FacultyDepartments';
 import FacultySubjects from '@/features/faculty/FacultySubjects';
 import { useEffect } from 'react';
+import { ErrorMessage } from '@/components/ui/error-message';
+import useUniqueDepartmentsAndSubjects from '@/hooks/useUniqueDeptAndSubj';
 
 const FacultyShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,51 +18,11 @@ const FacultyShow = () => {
 
   const { data: user, isPending, error } = useUser(id!);
 
-  if (error || (!isPending && !user)) {
-    return (
-      <div className="flex h-[80vh] items-center justify-center text-slate-500 font-medium">
-        User not found or error loading data.
-      </div>
-    );
-  }
+  if (error || (!isPending && !user))
+    return <ErrorMessage message="User not found or error loading data." />;
 
   // Extract unique departments and subjects based on role
-  const departments = user
-    ? user.role === 'teacher'
-      ? Array.from(
-          new Map(
-            user.classes?.map(cls => [
-              cls.subject.department.id,
-              cls.subject.department
-            ]) || []
-          ).values()
-        )
-      : Array.from(
-          new Map(
-            user.enrollments?.map(enr => [
-              enr.class.subject.department.id,
-              enr.class.subject.department
-            ]) || []
-          ).values()
-        )
-    : [];
-
-  const subjects = user
-    ? user.role === 'teacher'
-      ? Array.from(
-          new Map(
-            user.classes?.map(cls => [cls.subject.id, cls.subject]) || []
-          ).values()
-        )
-      : Array.from(
-          new Map(
-            user.enrollments?.map(enr => [
-              enr.class.subject.id,
-              enr.class.subject
-            ]) || []
-          ).values()
-        )
-    : [];
+  const { departments, subjects } = useUniqueDepartmentsAndSubjects(user);
 
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-6 p-6">

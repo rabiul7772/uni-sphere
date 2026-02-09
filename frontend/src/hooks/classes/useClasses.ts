@@ -3,21 +3,20 @@ import {
   getClasses,
   createClass,
   updateClass,
-  type Class
+  type ClassesResponse,
+  type GetClassesParams
 } from '@/services/classes/apiClasses';
 import toast from 'react-hot-toast';
 
-export const useClasses = () => {
-  const {
-    data: classes,
-    isPending,
-    error
-  } = useQuery<Class[], Error>({
-    queryKey: ['classes'],
-    queryFn: getClasses
+export const useClasses = (params: GetClassesParams = {}) => {
+  const { page = 1, limit = 10, search = '' } = params;
+
+  const { data, isPending, error } = useQuery<ClassesResponse, Error>({
+    queryKey: ['classes', page, limit, search],
+    queryFn: () => getClasses({ page, limit, search })
   });
 
-  return { classes, isPending, error };
+  return { data, isPending, error };
 };
 
 export const useCreateClass = () => {

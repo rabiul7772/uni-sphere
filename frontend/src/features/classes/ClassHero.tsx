@@ -1,11 +1,35 @@
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { Class } from '@/services/classes/apiClasses';
 
 interface ClassHeroProps {
-  classData: Class;
+  classData?: Class;
+  isLoading?: boolean;
 }
 
-export default function ClassHero({ classData }: ClassHeroProps) {
+export default function ClassHero({ classData, isLoading }: ClassHeroProps) {
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-6 mb-8">
+        <Skeleton className="w-full h-[280px] rounded-xl" />
+        <div className="flex flex-col gap-2 p-6 border rounded-xl bg-card">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-2 flex-1">
+              <Skeleton className="h-9 w-3/4" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-16 rounded-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!classData) return null;
+
   return (
     <div className="flex flex-col gap-6 mb-8">
       {/* Banner */}

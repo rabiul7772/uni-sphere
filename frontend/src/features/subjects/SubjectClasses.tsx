@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -12,6 +13,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router';
+import Pagination from '@/components/shared/Pagination';
+import { SUB_TABLE_PAGE_SIZE } from '@/constants';
 
 interface SubjectClassesProps {
   classes?: Array<{
@@ -33,6 +36,18 @@ const SubjectClasses = ({
   isLoading = false
 }: SubjectClassesProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalClasses = classes.length;
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
+  const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
+  const paginatedClasses = classes.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   if (isLoading) {
     return (
@@ -124,7 +139,7 @@ const SubjectClasses = ({
                 </TableCell>
               </TableRow>
             ) : (
-              classes.map(cls => (
+              paginatedClasses.map(cls => (
                 <TableRow
                   key={cls.id}
                   className="border-slate-50 hover:bg-slate-50/50"
@@ -185,6 +200,17 @@ const SubjectClasses = ({
             )}
           </TableBody>
         </Table>
+
+        {totalClasses > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalClasses}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

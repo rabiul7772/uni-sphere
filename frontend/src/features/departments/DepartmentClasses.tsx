@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -11,8 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router';
-
 import { Skeleton } from '@/components/ui/skeleton';
+import Pagination from '@/components/shared/Pagination';
+import { SUB_TABLE_PAGE_SIZE } from '@/constants';
 
 interface Class {
   id: string;
@@ -45,14 +47,26 @@ const DepartmentClasses = ({
   isLoading = false
 }: DepartmentClassesProps) => {
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+
   const classes = subjects.flatMap(sub => sub.classes);
+  const totalClasses = classes.length;
+
+  // Calculate pagination
+  const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
+  const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
+  const paginatedClasses = classes.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Card className="border-slate-100 shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <CardTitle className="text-lg font-bold">Classes</CardTitle>
         <span className="text-xs font-semibold text-slate-400">
-          {classes.length}
+          {totalClasses}
         </span>
       </CardHeader>
       <CardContent className="p-0">
@@ -99,7 +113,7 @@ const DepartmentClasses = ({
                     </TableCell>
                   </TableRow>
                 ))
-              : classes.map(cls => (
+              : paginatedClasses.map(cls => (
                   <TableRow
                     key={cls.id}
                     className="border-slate-50 hover:bg-slate-50/50"
@@ -153,6 +167,17 @@ const DepartmentClasses = ({
                 ))}
           </TableBody>
         </Table>
+
+        {totalClasses > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalClasses}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );

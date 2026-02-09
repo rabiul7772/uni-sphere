@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSubjects } from '@/hooks/subjects/useSubjects';
-import { useUsers } from '@/hooks/users/useUsers';
+import { useSubjectsList } from '@/hooks/subjects/useSubjects';
+import { useTeachersList } from '@/hooks/users/useUsers';
 import { useCreateClass, useUpdateClass } from '@/hooks/classes/useClasses';
 import { uploadImage } from '@/services/auth/apiCloudinary';
 import toast from 'react-hot-toast';
@@ -42,14 +42,10 @@ export const CreateClassForm = ({
   );
   const [isUploading, setIsUploading] = useState(false);
 
-  const { data: subjects, isPending: subjectsLoading } = useSubjects();
-  const { data: users, isPending: usersLoading } = useUsers();
+  const { data: subjects, isPending: subjectsLoading } = useSubjectsList();
+  const { data: teachers, isPending: teachersLoading } = useTeachersList();
   const { mutate: createClass, isPending: isCreating } = useCreateClass();
   const { mutate: updateClass, isPending: isUpdating } = useUpdateClass();
-
-  const teachers = users?.data?.filter(
-    (u: any) => u.role === 'teacher' || u.role === 'admin'
-  );
 
   const methods = useForm<ClassFormValues>({
     resolver: zodResolver(classSchema),
@@ -126,8 +122,9 @@ export const CreateClassForm = ({
     }
   };
 
-  const isLoading =
-    subjectsLoading || usersLoading || isCreating || isUpdating || isUploading;
+  const isDataLoading = subjectsLoading || teachersLoading;
+  const isSubmitting = isCreating || isUpdating || isUploading;
+  const isLoading = isDataLoading || isSubmitting;
 
   return (
     <FormProvider {...methods}>
@@ -149,6 +146,7 @@ export const CreateClassForm = ({
 
         <ClassFormActions
           isLoading={isLoading}
+          isSubmitting={isSubmitting}
           isUploading={isUploading}
           isEditing={isEditing}
           onCancel={onCancel}

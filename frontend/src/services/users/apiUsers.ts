@@ -79,3 +79,25 @@ export const getUser = async (id: string): Promise<UserDetail> => {
   const response = await api.get<ApiResponse<UserDetail>>(`/users/${id}`);
   return response.data.data;
 };
+
+// Lightweight type for dropdowns (only id and name)
+export interface TeacherListItem {
+  id: number;
+  name: string;
+}
+
+// Fetch all teachers for dropdowns (no pagination)
+export const getTeachersList = async (): Promise<TeacherListItem[]> => {
+  interface UsersResponse extends ApiResponse<UserDetail[]> {
+    count: number;
+  }
+
+  const response = await api.get<UsersResponse>('/users', {
+    params: { limit: 1000, role: 'teacher' }
+  });
+
+  return response.data.data.map(user => ({
+    id: user.id,
+    name: user.name
+  }));
+};

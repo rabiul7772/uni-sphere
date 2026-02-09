@@ -6,7 +6,6 @@ import Subjects from './pages/Subjects';
 import ProtectedRoute from './ui/ProtectedRoute';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Home from './pages/Home';
 import Faculty from './pages/Faculty';
 import Classes from './pages/Classes';
 import Enrollments from './pages/Enrollments';
@@ -14,6 +13,7 @@ import ClassShow from './pages/ClassShow';
 import DepartmentShow from './pages/DepartmentShow';
 import SubjectShow from './pages/SubjectShow';
 import FacultyShow from './pages/FacultyShow';
+import Home from './pages/Home';
 
 const App = () => {
   return (
