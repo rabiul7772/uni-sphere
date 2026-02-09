@@ -4,8 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
 import { Eye } from 'lucide-react';
 
+interface RecentClass {
+  id: number;
+  name: string;
+  bannerUrl: string | null;
+  teacher?: {
+    name: string;
+    avatarUrl: string | null;
+  };
+}
+
 interface RecentClassesProps {
-  classes: any[];
+  classes: RecentClass[];
 }
 
 const RecentClasses = ({ classes }: RecentClassesProps) => {

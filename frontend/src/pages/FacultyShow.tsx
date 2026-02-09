@@ -18,11 +18,11 @@ const FacultyShow = () => {
 
   const { data: user, isPending, error } = useUser(id!);
 
-  if (error || (!isPending && !user))
-    return <ErrorMessage message="User not found or error loading data." />;
-
   // Extract unique departments and subjects based on role
   const { departments, subjects } = useUniqueDepartmentsAndSubjects(user);
+
+  if (error || (!isPending && !user))
+    return <ErrorMessage message="User not found or error loading data." />;
 
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-6 p-6">
