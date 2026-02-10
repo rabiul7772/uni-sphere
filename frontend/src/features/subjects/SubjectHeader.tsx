@@ -6,18 +6,19 @@ import Modal from '@/ui/Modal';
 import EditSubjectForm from './EditSubjectForm';
 import type { Subject } from '@/services/subjects/apiSubjects';
 import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
+import { useUser } from '@/hooks/auth/useAuth';
 
 interface SubjectHeaderProps {
   subject?: Subject;
   isLoading?: boolean;
 }
 
-const SubjectHeader = ({
-  subject,
-  isLoading = false
-}: SubjectHeaderProps) => {
+const SubjectHeader = ({ subject, isLoading = false }: SubjectHeaderProps) => {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { data: user } = useUser();
+
+  const canEdit = user?.role === 'admin' || user?.role === 'teacher';
 
   if (isLoading) {
     return (
@@ -71,29 +72,33 @@ const SubjectHeader = ({
           <h1 className="text-2xl font-bold text-slate-900">{subject.name}</h1>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="gap-2 rounded-lg border-slate-200 text-slate-600 bg-white"
-            onClick={() => setIsEditModalOpen(true)}
-          >
-            <Pencil className="h-4 w-4" />
-            Edit
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              className="gap-2 rounded-lg border-slate-200 text-slate-600 bg-white"
+              onClick={() => setIsEditModalOpen(true)}
+            >
+              <Pencil className="h-4 w-4" />
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
 
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        title="Edit Subject"
-      >
-        <EditSubjectForm
-          subject={subject}
-          onSuccess={() => setIsEditModalOpen(false)}
-          onCancel={() => setIsEditModalOpen(false)}
-        />
-      </Modal>
+      {canEdit && (
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          title="Edit Subject"
+        >
+          <EditSubjectForm
+            subject={subject}
+            onSuccess={() => setIsEditModalOpen(false)}
+            onCancel={() => setIsEditModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

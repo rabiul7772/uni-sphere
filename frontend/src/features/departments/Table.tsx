@@ -1,11 +1,11 @@
 import { Table } from '@/components/ui/table';
 import DepartmentTableBody from './TableBody';
 import DepartmentTableHeader from './TableHeader';
-import type { Department } from '@/services/departments/apiDepartments';
+import type { DepartmentSummary } from '@/services/departments/apiDepartments';
 import { Spinner } from '@/components/ui/spinner';
 
 interface DepartmentTableProps {
-  departments: Department[];
+  departments: DepartmentSummary[];
   isLoading: boolean;
 }
 

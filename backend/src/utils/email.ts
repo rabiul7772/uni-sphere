@@ -57,3 +57,50 @@ export const sendEnrollmentEmail = async (data: EnrollmentEmailData) => {
     return { success: false, error: err };
   }
 };
+export const sendPasswordResetEmail = async (
+  email: string,
+  name: string,
+  resetUrl: string
+) => {
+  try {
+    const { data: resData, error } = await resend.emails.send({
+      from: 'UniSphere <onboarding@resend.dev>',
+      to: [email],
+      subject: 'Reset your UniSphere password',
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+          <h1 style="color: #0f172a; margin-bottom: 20px;">Password Reset Request</h1>
+          <p style="color: #475569; font-size: 16px; line-height: 1.6;">Hi <strong>${name}</strong>,</p>
+          <p style="color: #475569; font-size: 16px; line-height: 1.6;">
+            We received a request to reset your password. Click the button below to choose a new password:
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" style="background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">Reset Password</a>
+          </div>
+          <p style="color: #475569; font-size: 14px; line-height: 1.6;">
+            If you didn't request a password reset, you can safely ignore this email. This link will expire in 1 hour.
+          </p>
+          <p style="color: #475569; font-size: 14px; line-height: 1.6;">
+            If the button above doesn't work, copy and paste this link into your browser:
+            <br />
+            <a href="${resetUrl}" style="color: #4f46e5;">${resetUrl}</a>
+          </p>
+          <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;" />
+          <p style="color: #94a3b8; font-size: 14px; text-align: center; margin: 0;">
+            This is an automated email from UniSphere.
+          </p>
+        </div>
+      `
+    });
+
+    if (error) {
+      console.error('Resend error:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data: resData };
+  } catch (err) {
+    console.error('Password reset email failed:', err);
+    return { success: false, error: err };
+  }
+};

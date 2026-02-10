@@ -3,6 +3,7 @@ import Modal from '@/ui/Modal';
 import { CreateSubjectForm } from './CreateSubjectForm';
 import SearchInput from '@/components/shared/SearchInput';
 import CreateButton from '@/components/shared/CreateButton';
+import { useUser } from '@/hooks/auth/useAuth';
 
 interface SubjectHeaderProps {
   searchTerm: string;
@@ -11,6 +12,9 @@ interface SubjectHeaderProps {
 
 const SubjectHeader = ({ searchTerm, onSearchChange }: SubjectHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: user } = useUser();
+
+  const canCreate = user?.role === 'admin' || user?.role === 'teacher';
 
   return (
     <div className="flex items-center justify-between mb-8">
@@ -27,19 +31,21 @@ const SubjectHeader = ({ searchTerm, onSearchChange }: SubjectHeaderProps) => {
           onSearchChange={onSearchChange}
           placeholder="Search by name or code"
         />
-        <CreateButton onClick={() => setIsModalOpen(true)} />
+        {canCreate && <CreateButton onClick={() => setIsModalOpen(true)} />}
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Create New Subject"
-      >
-        <CreateSubjectForm
-          onSuccess={() => setIsModalOpen(false)}
-          onCancel={() => setIsModalOpen(false)}
-        />
-      </Modal>
+      {canCreate && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Create New Subject"
+        >
+          <CreateSubjectForm
+            onSuccess={() => setIsModalOpen(false)}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

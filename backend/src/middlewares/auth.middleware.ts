@@ -57,3 +57,15 @@ export const protect = async (
     });
   }
 };
+
+export const authorize = (...allowedRoles: string[]) => {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: `Forbidden - Role ${req.user?.role} does not have access to this resource`
+      });
+    }
+    next();
+  };
+};

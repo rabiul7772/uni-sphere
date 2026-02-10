@@ -8,6 +8,8 @@ import type { Department } from '@/services/departments/apiDepartments';
 
 import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
 
+import { useUser } from '@/hooks/auth/useAuth';
+
 interface DepartmentHeaderProps {
   department?: Department;
   isLoading?: boolean;
@@ -19,6 +21,9 @@ const DepartmentHeader = ({
 }: DepartmentHeaderProps) => {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { data: user } = useUser();
+
+  const canEdit = user?.role === 'admin' || user?.role === 'teacher';
 
   if (isLoading) {
     return (
@@ -74,28 +79,32 @@ const DepartmentHeader = ({
           </h1>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="gap-2 rounded-lg border-slate-200 text-slate-600"
-            onClick={() => setIsEditModalOpen(true)}
-          >
-            <Pencil className="h-4 w-4" />
-            Edit
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              className="gap-2 rounded-lg border-slate-200 text-slate-600"
+              onClick={() => setIsEditModalOpen(true)}
+            >
+              <Pencil className="h-4 w-4" />
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
 
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        title="Edit Department"
-      >
-        <EditDepartmentForm
-          department={department}
+      {canEdit && (
+        <Modal
+          isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
-        />
-      </Modal>
+          title="Edit Department"
+        >
+          <EditDepartmentForm
+            department={department}
+            onClose={() => setIsEditModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

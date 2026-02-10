@@ -5,15 +5,20 @@ import {
   getSubjectById,
   updateSubject
 } from '../controllers/subject.controller.js';
-import { protect } from '../middlewares/auth.middleware.js';
+import { protect, authorize } from '../middlewares/auth.middleware.js';
 
 const subjectRouter = Router();
 
 subjectRouter.get('/', getAllSubjects);
 subjectRouter.get('/:id', getSubjectById);
 
-subjectRouter.patch('/:id', protect, updateSubject);
+subjectRouter.patch(
+  '/:id',
+  protect,
+  authorize('admin', 'teacher'),
+  updateSubject
+);
 
-subjectRouter.post('/', protect, createSubject);
+subjectRouter.post('/', protect, authorize('admin', 'teacher'), createSubject);
 
 export default subjectRouter;

@@ -16,6 +16,10 @@ import { useUser } from '@/hooks/auth/useAuth';
 import { useEnrollInClass } from '@/hooks/enrollments/useEnrollments';
 import { Spinner } from '@/components/ui/spinner';
 import type { EnrollmentDetails } from '@/services/enrollments/apiEnrollments';
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { logout } from '@/services/auth/apiAuth';
+import { useNavigate } from 'react-router';
 
 const enrollmentSchema = z.object({
   classId: z.string().min(1, 'Please select a class')
@@ -28,10 +32,14 @@ interface EnrollmentFormProps {
 }
 
 export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const { data: currentUser } = useUser();
   const { data: classesData, isPending: classesLoading } = useClasses({
     limit: 1000
   });
+
   const classes = classesData?.data || [];
   const { mutate: enroll, isPending: isEnrolling } = useEnrollInClass();
 
@@ -58,6 +66,39 @@ export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
       }
     );
   };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      queryClient.removeQueries();
+      toast.success('Logged out successfully');
+      navigate('/signup');
+    } catch {
+      toast.error('Logout failed. Please try again.');
+    }
+  };
+
+  if (currentUser && currentUser.role !== 'student') {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden max-w-2xl mx-auto p-8 text-center py-12">
+        <h2 className="text-xl font-bold text-slate-900 mb-2">
+          Student Access Only
+        </h2>
+        <p className="text-slate-500">
+          Enrollment is only available for students. Please sign up as a student
+          to enroll in a class.
+        </p>
+
+        <Button
+          variant="outline"
+          className="mt-4 cursor-pointer font-bold text-blue-600"
+          onClick={handleLogout}
+        >
+          Signup as a Student
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden max-w-2xl mx-auto">
@@ -103,7 +144,7 @@ export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
             value={currentUser?.email || ''}
             readOnly
             disabled
-            className="h-11 rounded-xl border-slate-200 bg-slate-100 text-slate-600 shadow-sm"
+            className="h-11 rounded-xl border-slate-200 bg-slate-100 text-slate-900 shadow-sm"
           />
         </div>
 

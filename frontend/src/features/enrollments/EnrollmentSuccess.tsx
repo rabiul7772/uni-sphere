@@ -23,7 +23,8 @@ export const EnrollmentSuccess = ({ details }: EnrollmentSuccessProps) => {
               Enrollment Confirmed
             </h2>
             <p className="text-slate-500 mt-1">
-              You have been enrolled successfully.
+              You have been enrolled successfully. Please check your email for
+              more details.
             </p>
           </div>
 
@@ -72,15 +73,8 @@ export const EnrollmentSuccess = ({ details }: EnrollmentSuccessProps) => {
           <div className="flex gap-4 pt-4">
             <Button
               variant="outline"
-              onClick={() => navigate('/classes')}
-              className="h-11 px-6 rounded-xl font-bold bg-emerald-400/20 border-transparent text-emerald-800 hover:bg-emerald-400/30 transition-all shadow-sm"
-            >
-              View Classes
-            </Button>
-            <Button
-              variant="outline"
               onClick={() => navigate(`/classes/${details.class.id}`)}
-              className="h-11 px-6 rounded-xl font-bold border-slate-200 text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
+              className="h-11 px-6 rounded-xl font-bold bg-emerald-400/20 border-transparent text-emerald-800 hover:bg-emerald-400/30 transition-all shadow-sm"
             >
               Go to Class
             </Button>
