@@ -16,6 +16,11 @@ export interface AuthResponse {
   data: User;
 }
 
+export interface MessageResponse {
+  success: boolean;
+  message: string;
+}
+
 export const signup = async (data: any): Promise<User> => {
   const response = await api.post<AuthResponse>('/auth/signup', data);
   return response.data.data;
@@ -37,15 +42,21 @@ export const checkAuth = async (): Promise<User> => {
 
 export const forgotPassword = async (data: {
   email: string;
-}): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>('/auth/forgot-password', data);
+}): Promise<MessageResponse> => {
+  const response = await api.post<MessageResponse>(
+    '/auth/forgot-password',
+    data
+  );
   return response.data;
 };
 
 export const resetPassword = async (data: {
   token: string;
   password: any;
-}): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>('/auth/reset-password', data);
+}): Promise<MessageResponse> => {
+  const response = await api.post<MessageResponse>(
+    '/auth/reset-password',
+    data
+  );
   return response.data;
 };

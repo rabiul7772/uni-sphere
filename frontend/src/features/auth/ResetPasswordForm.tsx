@@ -8,6 +8,7 @@ import { useParams, Link } from 'react-router';
 import { useResetPassword } from '@/hooks/auth/useAuth';
 import { Spinner } from '@/components/ui/spinner';
 import { Lock, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ErrorMessage } from '@/components/ui/error-message';
 
 const resetPasswordSchema = z
   .object({
@@ -23,7 +24,16 @@ type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export const ResetPasswordForm = () => {
   const { token } = useParams();
-  const { mutate, isPending, isSuccess } = useResetPassword();
+  const { mutate, isPending, isSuccess, error } = useResetPassword();
+
+  if (error)
+    return (
+      <ErrorMessage
+        message={
+          error?.message || 'Failed to reset password. Please try again.'
+        }
+      />
+    );
 
   const {
     register,

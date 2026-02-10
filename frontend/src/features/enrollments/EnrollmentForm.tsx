@@ -19,7 +19,7 @@ import type { EnrollmentDetails } from '@/services/enrollments/apiEnrollments';
 import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { logout } from '@/services/auth/apiAuth';
-import { Link, Navigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const enrollmentSchema = z.object({
   classId: z.string().min(1, 'Please select a class')
@@ -33,6 +33,7 @@ interface EnrollmentFormProps {
 
 export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: currentUser } = useUser();
   const { data: classesData, isPending: classesLoading } = useClasses({
@@ -66,6 +67,17 @@ export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
     );
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      queryClient.removeQueries();
+      toast.success('Logged out successfully');
+      navigate('/signup');
+    } catch {
+      toast.error('Logout failed. Please try again.');
+    }
+  };
+
   if (currentUser && currentUser.role !== 'student') {
     return (
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden max-w-2xl mx-auto p-8 text-center py-12">
@@ -73,24 +85,17 @@ export const EnrollmentForm = ({ onSuccess }: EnrollmentFormProps) => {
           Student Access Only
         </h2>
         <p className="text-slate-500">
-          {' '}
-          Enrollment in a class only for student, signup as a student to enroll
-          in a class
+          Enrollment is only available for students. Please sign up as a student
+          to enroll in a class.
         </p>
-        <Link to="/signup">
-          <Button
-            variant="outline"
-            className="mt-4 cursor-pointer font-bold text-blue-600"
-            onClick={() => {
-              queryClient.setQueryData(['user'], null);
-              queryClient.removeQueries();
-              logout();
-              toast.success('Logged out successfully');
-            }}
-          >
-            Signup as a Student
-          </Button>
-        </Link>
+
+        <Button
+          variant="outline"
+          className="mt-4 cursor-pointer font-bold text-blue-600"
+          onClick={handleLogout}
+        >
+          Signup as a Student
+        </Button>
       </div>
     );
   }
