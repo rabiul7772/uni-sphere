@@ -5,13 +5,13 @@ import {
   getClassById,
   updateClass
 } from '../controllers/class.controller.js';
-import { protect } from '../middlewares/auth.middleware.js';
+import { protect, authorize } from '../middlewares/auth.middleware.js';
 
 const classRouter = Router();
 
 classRouter.get('/', protect, getClasses);
 classRouter.get('/:id', protect, getClassById);
-classRouter.post('/', protect, createClass);
-classRouter.put('/:id', protect, updateClass);
+classRouter.post('/', protect, authorize('admin', 'teacher'), createClass);
+classRouter.put('/:id', protect, authorize('admin', 'teacher'), updateClass);
 
 export default classRouter;

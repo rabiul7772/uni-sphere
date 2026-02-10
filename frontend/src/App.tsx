@@ -4,8 +4,6 @@ import Departments from './pages/Departments';
 import { Toaster } from 'react-hot-toast';
 import Subjects from './pages/Subjects';
 import ProtectedRoute from './ui/ProtectedRoute';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
 import Faculty from './pages/Faculty';
 import Classes from './pages/Classes';
 import Enrollments from './pages/Enrollments';
@@ -14,6 +12,10 @@ import DepartmentShow from './pages/DepartmentShow';
 import SubjectShow from './pages/SubjectShow';
 import FacultyShow from './pages/FacultyShow';
 import Home from './pages/Home';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 const App = () => {
   return (
@@ -36,6 +38,8 @@ const App = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
       <Toaster

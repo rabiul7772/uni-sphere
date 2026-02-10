@@ -4,6 +4,8 @@ import {
   login,
   logout,
   checkAuth,
+  forgotPassword,
+  resetPassword,
   type User
 } from '@/services/auth/apiAuth';
 import toast from 'react-hot-toast';
@@ -63,6 +65,33 @@ export const useLogout = () => {
       queryClient.removeQueries();
       toast.success('Logged out successfully');
       navigate('/login');
+    }
+  });
+};
+
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: (data: any) => {
+      toast.success(data.message || 'Password reset link sent to your email');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.message || 'Failed to send reset link');
+    }
+  });
+};
+
+export const useResetPassword = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: resetPassword,
+    onSuccess: (data: any) => {
+      toast.success(data.message || 'Password reset successful');
+      navigate('/login');
+    },
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.message || 'Failed to reset password');
     }
   });
 };

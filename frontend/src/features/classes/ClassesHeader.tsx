@@ -4,6 +4,8 @@ import { CreateClassForm } from './CreateClassForm';
 import SearchInput from '@/components/shared/SearchInput';
 import CreateButton from '@/components/shared/CreateButton';
 
+import { useUser } from '@/hooks/auth/useAuth';
+
 interface ClassesHeaderProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -14,6 +16,9 @@ export const ClassesHeader = ({
   onSearchChange
 }: ClassesHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: user } = useUser();
+
+  const canCreate = user?.role === 'admin' || user?.role === 'teacher';
 
   return (
     <div className="flex items-center justify-between mb-8">
@@ -30,19 +35,21 @@ export const ClassesHeader = ({
           onSearchChange={onSearchChange}
           placeholder="Search by class name"
         />
-        <CreateButton onClick={() => setIsModalOpen(true)} />
+        {canCreate && <CreateButton onClick={() => setIsModalOpen(true)} />}
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Fill out form"
-      >
-        <CreateClassForm
-          onSuccess={() => setIsModalOpen(false)}
-          onCancel={() => setIsModalOpen(false)}
-        />
-      </Modal>
+      {canCreate && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Fill out form"
+        >
+          <CreateClassForm
+            onSuccess={() => setIsModalOpen(false)}
+            onCancel={() => setIsModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

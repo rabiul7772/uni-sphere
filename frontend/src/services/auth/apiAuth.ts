@@ -34,3 +34,18 @@ export const checkAuth = async (): Promise<User> => {
   const response = await api.get<AuthResponse>('/auth/check-auth');
   return response.data.data;
 };
+
+export const forgotPassword = async (data: {
+  email: string;
+}): Promise<AuthResponse> => {
+  const response = await api.post<AuthResponse>('/auth/forgot-password', data);
+  return response.data;
+};
+
+export const resetPassword = async (data: {
+  token: string;
+  password: any;
+}): Promise<AuthResponse> => {
+  const response = await api.post<AuthResponse>('/auth/reset-password', data);
+  return response.data;
+};

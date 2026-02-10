@@ -4,6 +4,8 @@ import { useState } from 'react';
 import SearchInput from '@/components/shared/SearchInput';
 import CreateButton from '@/components/shared/CreateButton';
 
+import { useUser } from '@/hooks/auth/useAuth';
+
 interface DepartmentHeaderProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -14,6 +16,9 @@ const DepartmentHeader = ({
   onSearchChange
 }: DepartmentHeaderProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { data: user } = useUser();
+
+  const canCreate = user?.role === 'admin' || user?.role === 'teacher';
 
   return (
     <div className="flex items-end justify-between">
@@ -31,17 +36,21 @@ const DepartmentHeader = ({
           onSearchChange={onSearchChange}
           placeholder="Search by name or code"
         />
-        <CreateButton onClick={() => setIsOpenModal(true)} />
-        {isOpenModal && (
-          <Modal
-            title="Create Department"
-            onClose={() => setIsOpenModal(false)}
-          >
-            <CreateDepartmentForm
-              onSuccess={() => setIsOpenModal(false)}
-              onCancel={() => setIsOpenModal(false)}
-            />
-          </Modal>
+        {canCreate && (
+          <>
+            <CreateButton onClick={() => setIsOpenModal(true)} />
+            {isOpenModal && (
+              <Modal
+                title="Create Department"
+                onClose={() => setIsOpenModal(false)}
+              >
+                <CreateDepartmentForm
+                  onSuccess={() => setIsOpenModal(false)}
+                  onCancel={() => setIsOpenModal(false)}
+                />
+              </Modal>
+            )}
+          </>
         )}
       </div>
     </div>

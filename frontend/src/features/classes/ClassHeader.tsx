@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Modal from '@/ui/Modal';
 import { CreateClassForm } from './CreateClassForm';
 import type { Class } from '@/services/classes/apiClasses';
+import { useUser } from '@/hooks/auth/useAuth';
 
 interface ClassHeaderProps {
   classData?: Class;
@@ -25,6 +26,9 @@ export default function ClassHeader({
 }: ClassHeaderProps) {
   const navigate = useNavigate();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const { data: user } = useUser();
+
+  const canEdit = user?.role === 'admin' || user?.role === 'teacher';
 
   return (
     <div className="flex flex-col space-y-4 mb-6">
@@ -61,20 +65,22 @@ export default function ClassHeader({
           <h1 className="text-2xl font-bold tracking-tight">Class Details</h1>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditModalOpen(true)}
-            disabled={isLoading || !classData}
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            Edit
-          </Button>
-        </div>
+        {canEdit && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditModalOpen(true)}
+              disabled={isLoading || !classData}
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
 
-      {classData && (
+      {canEdit && classData && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}

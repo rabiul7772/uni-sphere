@@ -44,6 +44,8 @@ export const users = pgTable('users', {
     .$type<'admin' | 'student' | 'teacher'>()
     .notNull(),
   avatarUrl: varchar('avatar_url', { length: 1000 }),
+  resetPasswordToken: varchar('reset_password_token', { length: 255 }),
+  resetPasswordExpires: timestamp('reset_password_expires'),
   ...timestamps
 });
 

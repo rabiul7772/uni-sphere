@@ -7,6 +7,8 @@ import {
   comparePassword,
   generateToken
 } from '../utils/auth.utils.js';
+import crypto from 'crypto';
+import { sendPasswordResetEmail } from '../utils/email.js';
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -152,4 +154,129 @@ export const logout = (req: Request, res: Response) => {
     success: true,
     message: 'Logged out successfully'
   });
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+
+    const foundUsers = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+    const user = foundUsers[0];
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'No user found with this email'
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    const resetExpires = new Date(Date.now() + 3600000); // 1 hour from now
+
+    await db
+      .update(users)
+      .set({
+        resetPasswordToken: hashedToken,
+        resetPasswordExpires: resetExpires
+      })
+      .where(eq(users.id, user.id));
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    const emailResponse = await sendPasswordResetEmail(
+      user.email,
+      user.name,
+      resetUrl
+    );
+
+    if (!emailResponse.success) {
+      return res.status(500).json({
+        success: false,
+        message: 'Error sending reset email. Please try again later.'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset link sent to your email'
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while processing forgot password'
+    });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Token and password are required'
+      });
+    }
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const foundUsers = await db
+      .select()
+      .from(users)
+      .where(eq(users.resetPasswordToken, hashedToken))
+      .limit(1);
+    const user = foundUsers[0];
+
+    if (
+      !user ||
+      !user.resetPasswordExpires ||
+      user.resetPasswordExpires < new Date()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired reset token'
+      });
+    }
+
+    const hashedPassword = await hashPassword(password);
+
+    await db
+      .update(users)
+      .set({
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null
+      })
+      .where(eq(users.id, user.id));
+
+    res.status(200).json({
+      success: true,
+      message:
+        'Password reset successful. You can now log in with your new password.'
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error while resetting password'
+    });
+  }
 };

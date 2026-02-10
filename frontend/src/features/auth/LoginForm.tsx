@@ -9,8 +9,13 @@ import { useLogin } from '@/hooks/auth/useAuth';
 import { Spinner } from '@/components/ui/spinner';
 import { Mail, Lock, LogIn } from 'lucide-react';
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 const loginSchema = z.object({
-  email: z.email('Invalid email address'),
+  email: z
+    .email('Invalid email format')
+    .min(1, 'Email is required')
+    .regex(emailRegex, 'Please enter a valid email address'),
   password: z.string().min(1, 'Password is required')
 });
 
@@ -52,7 +57,7 @@ export const LoginForm = () => {
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           </div>
           {errors.email && (
-            <p className="text-[10px] text-red-500 font-medium ml-1">
+            <p className="text-[10px] text-red-500 font-bold ml-1">
               {errors.email.message}
             </p>
           )}
@@ -79,7 +84,7 @@ export const LoginForm = () => {
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           </div>
           {errors.password && (
-            <p className="text-[10px] text-red-500 font-medium ml-1">
+            <p className="text-[10px] text-red-500 font-bold ml-1">
               {errors.password.message}
             </p>
           )}

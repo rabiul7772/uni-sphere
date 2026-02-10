@@ -43,6 +43,13 @@
       "when": 1770096245852,
       "tag": "0005_cute_titanium_man",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1770706321013,
+      "tag": "0006_illegal_winter_soldier",
+      "breakpoints": true
     }
   ]
 }
