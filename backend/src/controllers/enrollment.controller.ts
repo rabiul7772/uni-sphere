@@ -89,7 +89,7 @@ export const enrollInClass = async (req: Request, res: Response) => {
 
     const enrollmentData = enrollmentDetails[0];
 
-    if (enrollmentData && enrollmentData.student) {
+    if (enrollmentData && enrollmentData?.student) {
       // Trigger email sending in the background
       sendEnrollmentEmail({
         studentName: enrollmentData.student.name,
