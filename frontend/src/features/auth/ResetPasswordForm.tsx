@@ -26,15 +26,6 @@ export const ResetPasswordForm = () => {
   const { token } = useParams();
   const { mutate, isPending, isSuccess, error } = useResetPassword();
 
-  if (error)
-    return (
-      <ErrorMessage
-        message={
-          error?.message || 'Failed to reset password. Please try again.'
-        }
-      />
-    );
-
   const {
     register,
     handleSubmit,
@@ -47,6 +38,15 @@ export const ResetPasswordForm = () => {
     if (!token) return;
     mutate({ token, password: data.password });
   };
+
+  if (error)
+    return (
+      <ErrorMessage
+        message={
+          error?.message || 'Failed to reset password. Please try again.'
+        }
+      />
+    );
 
   if (isSuccess) {
     return (
