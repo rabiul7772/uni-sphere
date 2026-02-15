@@ -14,11 +14,11 @@ const FacultyHeader = ({ user, isLoading = false }: FacultyHeaderProps) => {
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
+      <div className="detail-header">
+        <div className="detail-breadcrumb">
           <SkeletonList count={4} className="h-4 w-4" />
         </div>
-        <div className="flex items-center gap-4">
+        <div className="detail-title-group">
           <Skeleton className="h-10 w-10 rounded-full" />
           <Skeleton className="h-8 w-48" />
         </div>
@@ -29,37 +29,34 @@ const FacultyHeader = ({ user, isLoading = false }: FacultyHeaderProps) => {
   if (!user) return null;
 
   return (
-    <div className="space-y-4">
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-sm font-medium text-slate-500">
+    <div className="detail-header">
+      <nav className="detail-breadcrumb">
         <Home
-          className="h-4 w-4 cursor-pointer hover:text-slate-900"
+          className="h-4 w-4 detail-breadcrumb-link"
           onClick={() => navigate('/')}
         />
         <ChevronRight className="h-4 w-4" />
         <span
-          className="cursor-pointer hover:text-slate-900"
+          className="detail-breadcrumb-link"
           onClick={() => navigate('/faculty')}
         >
           Faculty
         </span>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-slate-900">Show</span>
+        <span className="detail-breadcrumb-current">Show</span>
       </nav>
 
-      {/* Main Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="detail-title-row">
+        <div className="detail-title-group">
           <Button
             variant="ghost"
             size="icon"
-            className="h-10 w-10 rounded-full hover:bg-slate-100"
+            className="detail-back-btn"
             onClick={() => navigate(-1)}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-5 w-5 text-foreground" />
           </Button>
-
-          <h1 className="text-2xl font-bold text-slate-900">{user.name}</h1>
+          <h1 className="detail-title">{user.name}</h1>
         </div>
       </div>
     </div>

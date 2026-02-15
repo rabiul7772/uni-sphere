@@ -57,6 +57,7 @@ export const sendEnrollmentEmail = async (data: EnrollmentEmailData) => {
     return { success: false, error: err };
   }
 };
+
 export const sendPasswordResetEmail = async (
   email: string,
   name: string,

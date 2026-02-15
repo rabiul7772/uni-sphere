@@ -32,29 +32,31 @@ const Faculty = () => {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto">
+    <div className="page-container">
       <FacultyBreadcrumb />
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-slate-900">Faculty</h1>
-      </div>
 
-      {/* Search and Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <SearchInput
-          searchTerm={searchTerm}
-          onSearchChange={val => {
-            setSearchTerm(val);
-            setSearchParams({ page: '1' }); // Reset to page 1 on search
-          }}
-          placeholder="Search by name or email..."
-        />
-        <FacultyFilter
-          selectedRole={selectedRole}
-          onRoleChange={val => {
-            setSelectedRole(val);
-            setSearchParams({ page: '1' }); // Reset on filter
-          }}
-        />
+      <div className="page-header">
+        <div className="page-header-content">
+          <h1 className="page-title">Faculty</h1>
+        </div>
+        <div className="page-header-actions">
+          <SearchInput
+            searchTerm={searchTerm}
+            onSearchChange={val => {
+              setSearchTerm(val);
+              setSearchParams({ page: '1' });
+            }}
+            placeholder="Search by name or email..."
+            className="hidden md:block"
+          />
+          <FacultyFilter
+            selectedRole={selectedRole}
+            onRoleChange={val => {
+              setSelectedRole(val);
+              setSearchParams({ page: '1' });
+            }}
+          />
+        </div>
       </div>
 
       <FacultyTable users={data?.data || []} isLoading={isFetching} />

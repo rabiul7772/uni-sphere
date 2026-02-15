@@ -31,7 +31,7 @@ const Classes = () => {
   };
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-10">
+    <div className="page-container">
       <ClassesBreadcrumb />
       <ClassesHeader searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 

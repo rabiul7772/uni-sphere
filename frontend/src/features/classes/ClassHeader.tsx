@@ -1,19 +1,12 @@
-import { useNavigate, Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Edit } from 'lucide-react';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from '@/components/ui/breadcrumb';
+import { ArrowLeft, Home, ChevronRight, Edit } from 'lucide-react';
 import { useState } from 'react';
 import Modal from '@/ui/Modal';
 import { CreateClassForm } from './CreateClassForm';
 import type { Class } from '@/services/classes/apiClasses';
 import { useUser } from '@/hooks/auth/useAuth';
+import { Skeleton, SkeletonList } from '@/components/ui/skeleton';
 
 interface ClassHeaderProps {
   classData?: Class;
@@ -30,53 +23,62 @@ export default function ClassHeader({
 
   const canEdit = user?.role === 'admin' || user?.role === 'teacher';
 
-  return (
-    <div className="flex flex-col space-y-4 mb-6">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/classes">Classes</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Show</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+  if (isLoading) {
+    return (
+      <div className="detail-header">
+        <div className="detail-breadcrumb">
+          <SkeletonList count={4} className="h-4 w-4" />
+        </div>
+        <div className="detail-title-row">
+          <div className="detail-title-group">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-8 w-48" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+  return (
+    <div className="detail-header">
+      <nav className="detail-breadcrumb">
+        <Home
+          className="h-4 w-4 detail-breadcrumb-link"
+          onClick={() => navigate('/')}
+        />
+        <ChevronRight className="h-4 w-4" />
+        <span
+          className="detail-breadcrumb-link"
+          onClick={() => navigate('/classes')}
+        >
+          Classes
+        </span>
+        <ChevronRight className="h-4 w-4" />
+        <span className="detail-breadcrumb-current">Show</span>
+      </nav>
+
+      <div className="detail-title-row">
+        <div className="detail-title-group">
           <Button
             variant="ghost"
             size="icon"
+            className="detail-back-btn"
             onClick={() => navigate(-1)}
-            className="h-8 w-8"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5 text-foreground" />
           </Button>
-          <h1 className="text-2xl font-bold tracking-tight">Class Details</h1>
+          <h1 className="detail-title">Class Details</h1>
         </div>
 
         {canEdit && (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsEditModalOpen(true)}
-              disabled={isLoading || !classData}
-            >
-              <Edit className="mr-2 h-4 w-4" />
-              Edit
-            </Button>
-          </div>
+          <Button
+            className="detail-edit-btn"
+            onClick={() => setIsEditModalOpen(true)}
+            disabled={!classData}
+          >
+            <Edit className="h-4 w-4" />
+            <span className="font-semibold text-base">Edit</span>
+          </Button>
         )}
       </div>
 

@@ -11,10 +11,10 @@ const Mainnav = () => {
           to={item.href}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200',
+              'flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200',
               isActive
-                ? 'bg-white/10 text-white shadow-sm'
-                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                ? 'bg-sidebar-accent text-foreground shadow-md ring-1 ring-border/50'
+                : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'
             )
           }
         >

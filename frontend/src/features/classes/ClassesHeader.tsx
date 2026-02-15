@@ -21,21 +21,21 @@ export const ClassesHeader = ({
   const canCreate = user?.role === 'admin' || user?.role === 'teacher';
 
   return (
-    <div className="flex items-center justify-between mb-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900">Classes</h1>
-        <p className="text-slate-500 mt-1">
-          Quick access to essential metrics and management tools.
-        </p>
-      </div>
+    <>
+      <div className="page-header">
+        <div className="page-header-content">
+          <h1 className="page-title">Classes</h1>
+        </div>
 
-      <div className="flex items-center gap-4 rounded-xl bg-white p-1">
-        <SearchInput
-          searchTerm={searchTerm}
-          onSearchChange={onSearchChange}
-          placeholder="Search by class name"
-        />
-        {canCreate && <CreateButton onClick={() => setIsModalOpen(true)} />}
+        <div className="page-header-actions">
+          <SearchInput
+            searchTerm={searchTerm}
+            onSearchChange={onSearchChange}
+            placeholder="Search by class name"
+            className="hidden md:block"
+          />
+          {canCreate && <CreateButton onClick={() => setIsModalOpen(true)} />}
+        </div>
       </div>
 
       {canCreate && (
@@ -50,6 +50,6 @@ export const ClassesHeader = ({
           />
         </Modal>
       )}
-    </div>
+    </>
   );
 };

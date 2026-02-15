@@ -1,53 +1,9 @@
 import api from '@/lib/axios';
 
-export interface Subject {
-  id: string;
-  code: string;
-  name: string;
-  description: string;
-  departmentId: string;
-  department: {
-    id: string;
-    name: string;
-    code: string;
-  };
-  classes: Array<{
-    id: string;
-    name: string;
-    status: 'active' | 'inactive';
-    teacher: {
-      id: string;
-      fullName: string;
-      email: string;
-      avatarUrl?: string;
-    };
-    enrollments: Array<{
-      id: string;
-      student: {
-        id: string;
-        fullName: string;
-        email: string;
-        avatar?: string;
-        role: string;
-      };
-    }>;
-  }>;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type { Subject, NewSubject } from '@/types/subject';
+export type { Subject, NewSubject };
 
-export interface NewSubject {
-  name: string;
-  code: string;
-  description: string;
-  departmentId: number | string;
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
+import type { ApiResponse } from '@/types/api';
 
 export interface GetSubjectsParams {
   page?: number;

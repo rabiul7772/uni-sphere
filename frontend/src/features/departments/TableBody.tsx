@@ -11,29 +11,20 @@ const DepartmentTableBody = ({ departments }: DepartmentTableBodyProps) => {
   return (
     <TableBody>
       {departments.map(dept => (
-        <TableRow
-          key={dept.code}
-          className="border-slate-50 hover:bg-slate-50/50"
-        >
-          <TableCell className="font-medium text-emerald-500 py-5 text-sm">
-            {dept.code}
-          </TableCell>
-          <TableCell className="font-semibold text-slate-700 text-sm">
+        <TableRow key={dept.code}>
+          <TableCell className="table-cell-accent">{dept.code}</TableCell>
+          <TableCell className="table-cell-primary bg-transparent">
             {dept.name}
           </TableCell>
-          <TableCell className="font-semibold text-slate-700 text-sm text-center">
+          <TableCell className="table-cell-primary text-center">
             {dept.subjects}
           </TableCell>
-          <TableCell className="text-slate-500 max-w-[500px] truncate text-sm text-center">
+          <TableCell className="table-cell-primary max-w-[500px] truncate text-center">
             {dept.description || '-'}
           </TableCell>
-          <TableCell className="text-right pr-8">
+          <TableCell className="text-right">
             <Link to={`/departments/${dept.id}`}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-              >
+              <Button variant="outline" size="sm" className="table-action-btn">
                 View
               </Button>
             </Link>

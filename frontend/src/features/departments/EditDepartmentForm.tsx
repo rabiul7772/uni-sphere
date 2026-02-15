@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2 } from 'lucide-react';
+import { Spinner } from '@/components/ui/spinner';
 
 const editDepartmentSchema = z.object({
   name: z.string().min(2, 'Department name must be at least 2 characters long'),
@@ -51,53 +51,68 @@ const EditDepartmentForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="code">Department Code</Label>
+      <div className="space-y-1.5">
+        <Label
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
+          htmlFor="code"
+        >
+          Department Code
+        </Label>
         <div className="relative group">
           <Input
             id="code"
             value={department.code}
             readOnly
-            className="bg-slate-50 cursor-not-allowed border-red-200 focus-visible:ring-red-500"
+            className="h-10 rounded-xl border-red-100 bg-red-50/30 cursor-not-allowed focus-visible:ring-red-500 shadow-sm font-semibold text-red-900"
           />
           <div className="absolute inset-0 cursor-not-allowed z-10 flex items-center justify-end pr-3 pointer-events-none">
-            <span className="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-1 rounded border border-red-100 uppercase">
+            <span className="text-[10px] font-bold text-red-500 bg-white px-2 py-0.5 rounded-lg border border-red-100 shadow-sm uppercase">
               LOCKED
             </span>
           </div>
         </div>
-        <p className="text-[10px] text-slate-400 font-semibold">
+        <p className="text-[10px] text-slate-400 font-semibold ml-1">
           Department code cannot be changed after creation.
         </p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="name">Department Name</Label>
+      <div className="space-y-1.5">
+        <Label
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
+          htmlFor="name"
+        >
+          Department Name *
+        </Label>
         <Input
           id="name"
           placeholder="e.g. Computer Science"
           disabled={isPending}
-          className="rounded-lg border-slate-200"
+          className="h-10 rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm"
           {...register('name')}
         />
         {errors.name && (
-          <p className="text-xs text-destructive font-medium">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.name.message}
           </p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+      <div className="space-y-1.5">
+        <Label
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
+          htmlFor="description"
+        >
+          Description *
+        </Label>
         <Textarea
           id="description"
           placeholder="Enter department description..."
           disabled={isPending}
-          className="min-h-[120px] rounded-lg border-slate-200 resize-none"
+          className="min-h-[120px] rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm resize-none"
           {...register('description')}
         />
         {errors.description && (
-          <p className="text-xs text-destructive font-medium">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.description.message}
           </p>
         )}
@@ -108,18 +123,18 @@ const EditDepartmentForm = ({
           type="button"
           variant="outline"
           onClick={onClose}
-          className="rounded-lg border-slate-200"
           disabled={isPending}
+          className="h-10 px-5 font-bold rounded-xl border-slate-200"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={isPending}
-          className="rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white min-w-[100px]"
+          className="h-10 px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/10 transition-all min-w-[140px]"
         >
           {isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Spinner size="sm" className="mr-2 text-white" />
           ) : (
             'Save Changes'
           )}

@@ -51,7 +51,7 @@ const SubjectClasses = ({
 
   if (isLoading) {
     return (
-      <Card className="border-slate-100 shadow-sm transition-all duration-200">
+      <Card className="border-border shadow-sm transition-all duration-200 bg-card">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <Skeleton className="h-6 w-20" />
           <Skeleton className="h-4 w-8" />
@@ -59,24 +59,24 @@ const SubjectClasses = ({
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-50 hover:bg-transparent">
-                <TableHead className="font-bold text-slate-900">
+              <TableRow className="border-border hover:bg-transparent bg-muted/50">
+                <TableHead className="font-bold text-foreground">
                   Class
                 </TableHead>
-                <TableHead className="font-bold text-slate-900">
+                <TableHead className="font-bold text-foreground">
                   Teacher
                 </TableHead>
-                <TableHead className="font-bold text-slate-900">
+                <TableHead className="font-bold text-foreground">
                   Status
                 </TableHead>
-                <TableHead className="text-right font-bold text-slate-900 pr-8">
+                <TableHead className="text-right font-bold text-foreground pr-8">
                   Details
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {Array.from({ length: 3 }).map((_, i) => (
-                <TableRow key={i} className="border-slate-50">
+                <TableRow key={i} className="border-border">
                   <TableCell className="py-4">
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
@@ -105,27 +105,23 @@ const SubjectClasses = ({
   }
 
   return (
-    <Card className="border-slate-100 shadow-sm transition-all duration-200">
+    <Card className="table-container border-border shadow-sm transition-all duration-200 bg-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg font-bold text-slate-900">
+        <CardTitle className="text-lg font-semibold text-foreground">
           Classes
         </CardTitle>
-        <span className="text-sm font-semibold text-slate-400">
+        <span className="text-sm font-semibold text-muted-foreground">
           {classes.length}
         </span>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-50 hover:bg-transparent">
-              <TableHead className="font-bold text-slate-900">Class</TableHead>
-              <TableHead className="font-bold text-slate-900">
-                Teacher
-              </TableHead>
-              <TableHead className="font-bold text-slate-900">Status</TableHead>
-              <TableHead className="text-right font-bold text-slate-900 pr-8">
-                Details
-              </TableHead>
+            <TableRow className="table-header-row">
+              <TableHead>Class</TableHead>
+              <TableHead>Teacher</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -133,30 +129,27 @@ const SubjectClasses = ({
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground font-medium"
                 >
                   No classes found for this subject.
                 </TableCell>
               </TableRow>
             ) : (
               paginatedClasses.map(cls => (
-                <TableRow
-                  key={cls.id}
-                  className="border-slate-50 hover:bg-slate-50/50"
-                >
-                  <TableCell className="font-medium text-slate-700 py-4">
+                <TableRow key={cls.id}>
+                  <TableCell className="table-cell-primary">
                     {cls.name}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
+                      <Avatar className="table-avatar">
                         <AvatarImage
                           src={
                             cls.teacher?.avatarUrl ||
                             '/avatars/default-avatar.png'
                           }
                         />
-                        <AvatarFallback className="bg-slate-100 text-xs text-slate-600 font-bold">
+                        <AvatarFallback className="bg-muted text-xs text-muted-foreground font-semibold">
                           {cls.teacher?.fullName
                             ?.split(' ')
                             .map((n: string) => n[0])
@@ -164,10 +157,10 @@ const SubjectClasses = ({
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-slate-700">
+                        <span className="table-cell-primary">
                           {cls.teacher?.fullName}
                         </span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {cls.teacher?.email}
                         </span>
                       </div>
@@ -175,21 +168,21 @@ const SubjectClasses = ({
                   </TableCell>
                   <TableCell>
                     <Badge
-                      className={`rounded-lg px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                      className={`rounded-lg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
                         cls.status === 'active'
-                          ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
-                          : 'bg-slate-50 text-slate-600 border-slate-100'
+                          ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                          : 'bg-muted text-muted-foreground border-border'
                       }`}
                       variant="outline"
                     >
                       {cls.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right pr-8">
+                  <TableCell className="text-right">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 rounded-lg border-slate-200 text-xs font-semibold text-slate-600 bg-white"
+                      className="table-action-btn"
                       onClick={() => navigate(`/classes/${cls.id}`)}
                     >
                       View

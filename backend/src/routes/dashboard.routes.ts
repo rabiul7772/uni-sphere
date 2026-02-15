@@ -4,11 +4,12 @@ import {
   getRecentClasses,
   getChartData
 } from '../controllers/dashboard.controller.js';
+import { protect } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.get('/stats', getDashboardStats);
-router.get('/recent-classes', getRecentClasses);
-router.get('/charts', getChartData);
+router.get('/stats', protect, getDashboardStats);
+router.get('/recent-classes', protect, getRecentClasses);
+router.get('/charts', protect, getChartData);
 
 export default router;

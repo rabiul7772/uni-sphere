@@ -46,25 +46,23 @@ const Subjects = () => {
     );
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="page-container">
       <SubjectBreadcrumb />
       <SubjectHeader
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
       />
 
-      <div className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden">
-        <SubjectTable subjects={subjects} isLoading={isPending} />
+      <SubjectTable subjects={subjects} isLoading={isPending} />
 
-        {totalCount > PAGE_SIZE && (
-          <Pagination
-            currentPage={page}
-            totalCount={totalCount}
-            pageSize={PAGE_SIZE}
-            onPageChange={handlePageChange}
-          />
-        )}
-      </div>
+      {totalCount > PAGE_SIZE && (
+        <Pagination
+          currentPage={page}
+          totalCount={totalCount}
+          pageSize={PAGE_SIZE}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

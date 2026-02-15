@@ -10,7 +10,7 @@ interface ClassHeroProps {
 export default function ClassHero({ classData, isLoading }: ClassHeroProps) {
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-6 mb-8">
+      <div className="flex flex-col gap-6">
         <Skeleton className="w-full h-[280px] rounded-xl" />
         <div className="flex flex-col gap-2 p-6 border rounded-xl bg-card">
           <div className="flex items-start justify-between gap-4">
@@ -31,7 +31,7 @@ export default function ClassHero({ classData, isLoading }: ClassHeroProps) {
   if (!classData) return null;
 
   return (
-    <div className="flex flex-col gap-6 mb-8">
+    <div className="flex flex-col gap-6">
       {/* Banner */}
       <div className="relative w-full h-[280px] rounded-xl overflow-hidden bg-muted">
         {classData.bannerUrl ? (
@@ -49,23 +49,27 @@ export default function ClassHero({ classData, isLoading }: ClassHeroProps) {
 
       {/* Title and Badge */}
       <div className="flex flex-col gap-2 p-6 border rounded-xl bg-card">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-1">
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
+          <div className="flex flex-col gap-1 text-center md:text-left">
             <h2 className="text-3xl font-bold">{classData.name}</h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-l">
               {classData.description}
             </p>
           </div>
-          <div className="flex items-center gap-2 mt-2">
-            <Badge variant="secondary" className="bg-accent/10 px-3 py-1">
+          <div className="flex items-center gap-2 mt-2 md:mt-0">
+            <Badge
+              variant="outline"
+              className="bg-primary/10 text-primary border-primary/20 px-3 py-1.5 text-sm font-bold"
+            >
               {classData.capacity} spots
             </Badge>
             <Badge
               className={`${
                 classData.status === 'active'
-                  ? 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'
-                  : 'bg-muted text-muted-foreground'
+                  ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                  : 'bg-muted text-muted-foreground border-border'
               } px-3 py-1 uppercase font-semibold`}
+              variant="outline"
             >
               {classData.status}
             </Badge>

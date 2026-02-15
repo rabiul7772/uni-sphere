@@ -25,7 +25,7 @@ const FacultyShow = () => {
     return <ErrorMessage message="User not found or error loading data." />;
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] space-y-6 p-6">
+    <div className="detail-container">
       <FacultyHeader user={user} isLoading={isPending} />
       <FacultyProfile user={user} isLoading={isPending} />
       <FacultyDepartments

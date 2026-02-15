@@ -19,11 +19,11 @@ const DepartmentStats = ({
   isLoading = false
 }: DepartmentStatsProps) => {
   return (
-    <Card className="border-slate-100 bg-white/50 backdrop-blur-sm">
+    <Card className="section-card">
       <CardContent className="p-6 space-y-6">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">Overview</h2>
-          <div className="mt-2 text-slate-600 leading-relaxed font-medium">
+          <h2 className="section-card-title">Overview</h2>
+          <div className="mt-2 section-card-description">
             {isLoading ? (
               <div className="space-y-2">
                 <Skeleton className="h-4 w-full" />
@@ -36,23 +36,23 @@ const DepartmentStats = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="detail-grid-3">
           <StatCard
             label="Total Subjects"
             value={subjectsCount}
-            icon={<BookOpen className="h-5 w-5 text-slate-400 font-semibold" />}
+            icon={<BookOpen className="stat-card-icon" />}
             isLoading={isLoading}
           />
           <StatCard
             label="Total Classes"
             value={classesCount}
-            icon={<Layers className="h-5 w-5 text-slate-400 font-semibold" />}
+            icon={<Layers className="stat-card-icon" />}
             isLoading={isLoading}
           />
           <StatCard
-            label="Enrolled Students"
+            label="Total Enrollments"
             value={enrolledStudentsCount}
-            icon={<Users className="h-5 w-5 text-slate-400 font-semibold" />}
+            icon={<Users className="stat-card-icon" />}
             isLoading={isLoading}
           />
         </div>
@@ -72,14 +72,14 @@ const StatCard = ({
   icon: React.ReactNode;
   isLoading?: boolean;
 }) => (
-  <Card className="border-slate-100 bg-white shadow-sm">
-    <CardContent className="flex items-center justify-between p-4">
+  <Card className="stat-card">
+    <CardContent className="stat-card-content">
       <div className="space-y-1">
-        <p className="text-sm font-bold text-slate-900">{label}</p>
+        <p className="stat-card-label">{label}</p>
         {isLoading ? (
           <Skeleton className="h-8 w-16" />
         ) : (
-          <p className="text-2xl font-bold text-slate-900">{value}</p>
+          <p className="stat-card-value">{value}</p>
         )}
       </div>
       {icon}

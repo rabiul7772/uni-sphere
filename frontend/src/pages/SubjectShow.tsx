@@ -40,29 +40,25 @@ const SubjectShow = () => {
     .filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] space-y-6 p-6">
+    <div className="detail-container">
       <SubjectHeader subject={subject} isLoading={isPending} />
-
-      <div className="space-y-6">
-        <SubjectOverview subject={subject} isLoading={isPending} />
-        <SubjectDepartment
-          department={subject?.department}
+      <SubjectOverview subject={subject} isLoading={isPending} />
+      <SubjectDepartment
+        department={subject?.department}
+        isLoading={isPending}
+      />
+      <SubjectClasses classes={subject?.classes} isLoading={isPending} />
+      <div className="detail-grid-2">
+        <PeopleTable
+          title="Teachers"
+          people={teachers}
           isLoading={isPending}
         />
-        <SubjectClasses classes={subject?.classes} isLoading={isPending} />
-
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <PeopleTable
-            title="Teachers"
-            people={teachers}
-            isLoading={isPending}
-          />
-          <PeopleTable
-            title="Students"
-            people={students}
-            isLoading={isPending}
-          />
-        </div>
+        <PeopleTable
+          title="Students"
+          people={students}
+          isLoading={isPending}
+        />
       </div>
     </div>
   );

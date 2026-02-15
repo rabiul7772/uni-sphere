@@ -22,10 +22,12 @@ export const ClassDetailsFields = ({ isLoading }: ClassDetailsFieldsProps) => {
   } = useFormContext();
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <Label className="text-xs font-bold text-slate-700">Capacity *</Label>
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Capacity *
+          </Label>
           <Input
             type="number"
             placeholder="30"
@@ -34,14 +36,16 @@ export const ClassDetailsFields = ({ isLoading }: ClassDetailsFieldsProps) => {
             disabled={isLoading}
           />
           {errors.capacity && (
-            <p className="text-xs text-red-500 font-medium ml-1">
+            <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
               {errors.capacity.message as string}
             </p>
           )}
         </div>
 
-        <div className="space-y-1">
-          <Label className="text-xs font-bold text-slate-700">Status *</Label>
+        <div className="space-y-1.5">
+          <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Status *
+          </Label>
           <Controller
             name="status"
             control={control}
@@ -62,25 +66,25 @@ export const ClassDetailsFields = ({ isLoading }: ClassDetailsFieldsProps) => {
             )}
           />
           {errors.status && (
-            <p className="text-xs text-red-500 font-medium ml-1">
+            <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
               {errors.status.message as string}
             </p>
           )}
         </div>
       </div>
 
-      <div className="space-y-1">
-        <Label className="text-xs font-bold text-slate-700">
+      <div className="space-y-1.5">
+        <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
           Description *
         </Label>
         <Textarea
           placeholder="Brief description about the class"
-          className="min-h-[80px] rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm resize-none"
+          className="min-h-[50px] rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm resize-none"
           {...register('description')}
           disabled={isLoading}
         />
         {errors.description && (
-          <p className="text-xs text-red-500 font-medium ml-1">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.description.message as string}
           </p>
         )}

@@ -32,27 +32,27 @@ const Pagination: React.FC<PaginationProps> = ({
   const endResult = Math.min(currentPage * pageSize, totalCount);
 
   return (
-    <div className="flex items-center justify-between mt-8 text-sm font-bold">
+    <div className="flex items-center justify-between mt-4 text-sm">
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
-        className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="text-foreground hover:text-primary font-bold transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed"
       >
-        <span>&larr;</span> Previous
+        <span className="text-lg leading-none">&larr;</span> Previous
       </button>
 
-      <span className="text-slate-600 font-normal">
-        Showing <span className="font-bold text-slate-900">{startResult}</span>{' '}
-        to <span className="font-bold text-slate-900">{endResult}</span> of{' '}
-        <span className="font-bold text-slate-900">{totalCount}</span> results
+      <span className="text-foreground font-medium">
+        Showing <span className="font-bold text-foreground">{startResult}</span>{' '}
+        to <span className="font-bold text-foreground">{endResult}</span> of{' '}
+        <span className="font-bold text-foreground">{totalCount}</span> results
       </span>
 
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="text-foreground hover:text-primary font-bold transition-all flex items-center gap-2 disabled:opacity-30 disabled:cursor-not-allowed"
       >
-        Next <span>&rarr;</span>
+        Next <span className="text-lg leading-none">&rarr;</span>
       </button>
     </div>
   );

@@ -1,51 +1,8 @@
 import api from '@/lib/axios';
+import type { UserDetail } from '@/types/auth'; // Import from new location
+import type { ApiResponse } from '@/types/api'; // Import from new location
 
-export interface UserDetail {
-  id: number;
-  name: string;
-  email: string;
-  role: 'admin' | 'student' | 'teacher';
-  avatarUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-  classes?: Array<{
-    id: number;
-    name: string;
-    subject: {
-      id: number;
-      name: string;
-      code: string;
-      department: {
-        id: number;
-        name: string;
-        code: string;
-      };
-    };
-  }>;
-  enrollments?: Array<{
-    id: number;
-    class: {
-      id: number;
-      name: string;
-      subject: {
-        id: number;
-        name: string;
-        code: string;
-        department: {
-          id: number;
-          name: string;
-          code: string;
-        };
-      };
-    };
-  }>;
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message?: string;
-  data: T;
-}
+export type { UserDetail, ApiResponse }; // Re-export for compatibility
 
 export const getUsers = async (params?: {
   page?: number;

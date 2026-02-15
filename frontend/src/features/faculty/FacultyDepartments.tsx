@@ -50,9 +50,9 @@ const FacultyDepartments = ({
 
   if (isLoading) {
     return (
-      <Card className="border-slate-100 shadow-sm">
+      <Card className="border-border shadow-sm bg-card">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-lg font-bold text-slate-900">
+          <CardTitle className="text-lg font-bold text-foreground">
             Departments
           </CardTitle>
           <Skeleton className="h-5 w-6" />
@@ -61,22 +61,24 @@ const FacultyDepartments = ({
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-50 hover:bg-transparent">
-                <TableHead className="font-bold text-slate-900">Code</TableHead>
-                <TableHead className="font-bold text-slate-900">
+              <TableRow className="border-border hover:bg-transparent bg-muted/50">
+                <TableHead className="font-bold text-foreground">
+                  Code
+                </TableHead>
+                <TableHead className="font-bold text-foreground">
                   Department
                 </TableHead>
-                <TableHead className="font-bold text-slate-900">
+                <TableHead className="font-bold text-foreground">
                   Description
                 </TableHead>
-                <TableHead className="text-right font-bold text-slate-900 pr-8">
+                <TableHead className="text-right font-bold text-foreground pr-8">
                   Details
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {[1, 2, 3].map(i => (
-                <TableRow key={i} className="border-slate-50">
+                <TableRow key={i} className="border-border">
                   <TableCell className="py-4">
                     <Skeleton className="h-6 w-16 rounded-full" />
                   </TableCell>
@@ -99,33 +101,27 @@ const FacultyDepartments = ({
   }
 
   return (
-    <Card className="border-slate-100 shadow-sm">
+    <Card className="table-container border-border shadow-sm bg-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 ">
-        <CardTitle className="text-lg font-bold text-slate-900">
+        <CardTitle className="text-lg font-semibold text-foreground">
           Departments
         </CardTitle>
 
-        <span className="text-sm font-semibold text-slate-400">
+        <span className="text-sm font-semibold text-muted-foreground">
           {departments.length}
         </span>
       </CardHeader>
-      <p className="text-slate-500 text-sm px-4">
+      <p className="text-muted-foreground text-sm px-4">
         Departments tied to {userName} based on classes and enrollments.
       </p>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-50 hover:bg-transparent">
-              <TableHead className="font-bold text-slate-900">Code</TableHead>
-              <TableHead className="font-bold text-slate-900">
-                Department
-              </TableHead>
-              <TableHead className="font-bold text-slate-900">
-                Description
-              </TableHead>
-              <TableHead className="text-right font-bold text-slate-900 pr-8">
-                Details
-              </TableHead>
+            <TableRow className="table-header-row">
+              <TableHead>Code</TableHead>
+              <TableHead>Department</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead className="text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -133,18 +129,15 @@ const FacultyDepartments = ({
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground font-medium"
                 >
                   No departments found.
                 </TableCell>
               </TableRow>
             ) : (
               paginatedDepartments.map(dept => (
-                <TableRow
-                  key={dept.id}
-                  className="border-slate-50 hover:bg-slate-50/50"
-                >
-                  <TableCell className="py-4">
+                <TableRow key={dept.id}>
+                  <TableCell>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-bold ${getDepartmentColor(
                         Number(dept.id)
@@ -153,17 +146,17 @@ const FacultyDepartments = ({
                       {dept.code}
                     </span>
                   </TableCell>
-                  <TableCell className="font-semibold text-slate-700 py-4">
+                  <TableCell className="table-cell-primary">
                     {dept.name}
                   </TableCell>
-                  <TableCell className="text-slate-500 text-sm py-4 max-w-[400px] truncate">
+                  <TableCell className="table-cell-secondary max-w-[400px] truncate">
                     {dept.description || 'No description available'}
                   </TableCell>
-                  <TableCell className="text-right pr-8 py-4">
+                  <TableCell className="text-right">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 rounded-lg border-slate-200 text-xs font-semibold text-slate-600 bg-white"
+                      className="table-action-btn"
                       onClick={() => navigate(`/departments/${dept.id}`)}
                     >
                       View

@@ -43,17 +43,17 @@ export const LoginForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-3">
         <div className="space-y-1">
-          <Label className="text-xs font-bold text-slate-600 ml-1">
+          <Label className="text-sm font-bold text-slate-800 dark:text-muted-foreground ml-1">
             Email Address
           </Label>
           <div className="relative">
             <Input
               placeholder="name@example.com"
-              className="pl-9 h-10 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all shadow-sm text-sm"
+              className="pl-9 h-10 rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary focus:ring-primary transition-all shadow-sm text-sm"
               {...register('email')}
               disabled={isPending}
             />
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
           {errors.email && (
             <p className="text-[10px] text-red-500 font-bold ml-1">
@@ -64,10 +64,12 @@ export const LoginForm = () => {
 
         <div className="space-y-1">
           <div className="flex items-center justify-between ml-1">
-            <Label className="text-xs font-bold text-slate-600">Password</Label>
+            <Label className="text-sm font-bold text-slate-800 dark:text-muted-foreground">
+              Password
+            </Label>
             <Link
               to="/forgot-password"
-              className="text-[10px] font-bold text-indigo-600 hover:text-indigo-700"
+              className="text-xs font-bold text-primary hover:text-primary/80 transition-colors"
             >
               Forgot password?
             </Link>
@@ -76,11 +78,11 @@ export const LoginForm = () => {
             <Input
               type="password"
               placeholder="••••••••"
-              className="pl-9 h-10 rounded-xl border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 transition-all shadow-sm text-sm"
+              className="pl-9 h-10 rounded-xl border-border bg-muted/50 focus:bg-card focus:border-primary focus:ring-primary transition-all shadow-sm text-sm"
               {...register('password')}
               disabled={isPending}
             />
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
           {errors.password && (
             <p className="text-[10px] text-red-500 font-bold ml-1">
@@ -92,12 +94,12 @@ export const LoginForm = () => {
 
       <Button
         type="submit"
-        className="w-full h-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base shadow-lg shadow-indigo-100 transition-all mt-2"
+        className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base shadow-lg shadow-primary/20 transition-all mt-2"
         disabled={isPending}
       >
         {isPending ? (
           <div className="flex items-center gap-2">
-            <Spinner size="sm" className="text-white" />
+            <Spinner size="sm" className="text-primary-foreground" />
             <span className="text-sm">Logging In...</span>
           </div>
         ) : (
@@ -109,11 +111,11 @@ export const LoginForm = () => {
       </Button>
 
       <div className="text-center mt-4">
-        <p className="text-slate-500 text-xs">
+        <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">
           Don't have an account?{' '}
           <Link
             to="/signup"
-            className="text-indigo-600 font-bold hover:text-indigo-700 transition-colors"
+            className="text-primary font-bold hover:text-primary/80 transition-colors"
           >
             Sign up
           </Link>

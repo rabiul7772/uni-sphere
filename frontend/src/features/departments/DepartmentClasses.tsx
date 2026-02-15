@@ -62,111 +62,110 @@ const DepartmentClasses = ({
   };
 
   return (
-    <Card className="border-slate-100 shadow-sm">
+    <Card className="table-container border-border shadow-sm bg-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg font-bold">Classes</CardTitle>
-        <span className="text-xs font-semibold text-slate-400">
+        <CardTitle className="text-lg font-semibold text-foreground">
+          Classes
+        </CardTitle>
+        <span className="text-sm font-semibold text-muted-foreground">
           {totalClasses}
         </span>
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-slate-50 hover:bg-transparent">
-              <TableHead className="font-bold text-slate-900">Class</TableHead>
-              <TableHead className="font-bold text-slate-900">
-                Subject
-              </TableHead>
-              <TableHead className="font-bold text-slate-900">
-                Teacher
-              </TableHead>
-              <TableHead className="font-bold text-slate-900">Status</TableHead>
-              <TableHead className="text-right font-bold text-slate-900 pr-8">
-                Details
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading
-              ? Array.from({ length: 3 }).map((_, i) => (
-                  <TableRow key={i} className="border-slate-50">
-                    <TableCell className="py-4">
-                      <Skeleton className="h-6 w-32" />
-                    </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-6 w-40" />
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="h-8 w-8 rounded-full" />
-                        <div className="flex flex-col gap-1">
-                          <Skeleton className="h-4 w-24" />
-                          <Skeleton className="h-3 w-32" />
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="table-header-row">
+                <TableHead>Class</TableHead>
+                <TableHead>Subject</TableHead>
+                <TableHead>Teacher</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Details</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isLoading
+                ? Array.from({ length: 3 }).map((_, i) => (
+                    <TableRow key={i}>
+                      <TableCell>
+                        <Skeleton className="h-6 w-32" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-40" />
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Skeleton className="h-8 w-8 rounded-full" />
+                          <div className="flex flex-col gap-1">
+                            <Skeleton className="h-4 w-24" />
+                            <Skeleton className="h-3 w-32" />
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-6 w-20" />
-                    </TableCell>
-                    <TableCell className="text-right pr-8">
-                      <Skeleton className="ml-auto h-8 w-16" />
-                    </TableCell>
-                  </TableRow>
-                ))
-              : paginatedClasses.map(cls => (
-                  <TableRow
-                    key={cls.id}
-                    className="border-slate-50 hover:bg-slate-50/50"
-                  >
-                    <TableCell className="py-4 font-semibold text-slate-700">
-                      {cls.name}
-                    </TableCell>
-                    <TableCell className="text-slate-500">
-                      {cls.subject.name} ({cls.subject.code})
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src={cls.teacher.avatarUrl} />
-                          <AvatarFallback className="bg-slate-100 text-xs text-slate-600">
-                            {cls.teacher?.fullName
-                              ?.split(' ')
-                              .map(n => n[0])
-                              .join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-semibold text-slate-700">
-                            {cls.teacher?.fullName}
-                          </span>
-                          <span className="text-xs text-slate-400">
-                            {cls.teacher?.email}
-                          </span>
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-6 w-20" />
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Skeleton className="ml-auto h-8 w-16" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : paginatedClasses.map(cls => (
+                    <TableRow key={cls.id}>
+                      <TableCell className="table-cell-primary">
+                        {cls.name}
+                      </TableCell>
+                      <TableCell className="table-cell-secondary">
+                        {cls.subject.name} ({cls.subject.code})
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar className="table-avatar">
+                            <AvatarImage src={cls.teacher.avatarUrl} />
+                            <AvatarFallback className="bg-muted text-xs text-muted-foreground font-semibold">
+                              {cls.teacher?.fullName
+                                ?.split(' ')
+                                .map(n => n[0])
+                                .join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col">
+                            <span className="table-cell-primary">
+                              {cls.teacher?.fullName}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {cls.teacher?.email}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 font-medium"
-                      >
-                        {cls.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right pr-8">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
-                        onClick={() => navigate(`/classes/${cls.id}`)}
-                      >
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className={`rounded-lg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                            cls.status === 'active'
+                              ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                              : 'bg-muted text-muted-foreground border-border'
+                          }`}
+                          variant="outline"
+                        >
+                          {cls.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="table-action-btn"
+                          onClick={() => navigate(`/classes/${cls.id}`)}
+                        >
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+        </div>
 
         {totalClasses > SUB_TABLE_PAGE_SIZE && !isLoading && (
           <div className="px-6 pb-6">

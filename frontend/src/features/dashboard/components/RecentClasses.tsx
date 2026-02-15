@@ -48,7 +48,7 @@ const RecentClasses = ({ classes }: RecentClassesProps) => {
                   </p>
                   <div className="hidden md:flex items-center gap-2 shrink-0">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={cls.teacher?.avatarUrl} />
+                      <AvatarImage src={cls.teacher?.avatarUrl ?? undefined} />
                       <AvatarFallback>
                         {cls.teacher?.name?.charAt(0) || 'T'}
                       </AvatarFallback>
@@ -60,7 +60,12 @@ const RecentClasses = ({ classes }: RecentClassesProps) => {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  <Button variant="outline" size="sm" asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="table-action-btn"
+                    asChild
+                  >
                     <Link to={`/classes/${cls.id}`}>
                       <Eye className="h-4 w-4 md:mr-2" />
                       <span className="hidden md:inline">View</span>

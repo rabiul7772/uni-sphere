@@ -8,9 +8,10 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Skeleton } from '@/components/ui/skeleton';
 import Pagination from '@/components/shared/Pagination';
 import { SUB_TABLE_PAGE_SIZE } from '@/constants';
@@ -24,11 +25,11 @@ export default function EnrolledStudentsTable({
   students,
   isLoading
 }: EnrolledStudentsTableProps) {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalStudents = students?.length || 0;
 
-  // Calculate pagination
   const startIndex = (currentPage - 1) * SUB_TABLE_PAGE_SIZE;
   const endIndex = startIndex + SUB_TABLE_PAGE_SIZE;
   const paginatedStudents = students?.slice(startIndex, endIndex);
@@ -39,106 +40,131 @@ export default function EnrolledStudentsTable({
 
   if (isLoading) {
     return (
-      <div className="border rounded-xl bg-card overflow-hidden">
-        <div className="p-4 border-b">
-          <h3 className="font-bold">Enrolled Students</h3>
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/50">
-              <TableHead className="w-[400px]">Student</TableHead>
-              <TableHead>Details</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <TableRow key={i}>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <Skeleton className="h-9 w-9 rounded-full" />
-                    <div className="flex flex-col gap-1">
-                      <Skeleton className="h-4 w-32" />
-                      <Skeleton className="h-3 w-48" />
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-8 w-16" />
-                </TableCell>
+      <Card className="border-border shadow-sm bg-card">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <Skeleton className="h-6 w-36" />
+          <Skeleton className="h-4 w-8" />
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-border hover:bg-transparent bg-muted/50">
+                <TableHead className="font-bold text-foreground">
+                  Student
+                </TableHead>
+                <TableHead className="text-right font-bold text-foreground pr-8">
+                  Details
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-
-  if (!students || students.length === 0) {
-    return (
-      <div className="p-12 border rounded-xl bg-card text-center">
-        <p className="text-muted-foreground">No students enrolled yet.</p>
-      </div>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <TableRow key={i} className="border-border">
+                  <TableCell className="py-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-8 w-8 rounded-full" />
+                      <div className="flex flex-col gap-1">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-48" />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right pr-8">
+                    <Skeleton className="ml-auto h-8 w-16" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="border rounded-xl bg-card overflow-hidden">
-      <div className="p-4 border-b">
-        <h3 className="font-bold">Enrolled Students</h3>
-      </div>
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-muted/50">
-            <TableHead className="w-[400px]">Student</TableHead>
-            <TableHead>Details</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedStudents?.map(student => (
-            <TableRow key={student.id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-9 w-9">
-                    <AvatarImage
-                      src={student.avatarUrl || ''}
-                      alt={student.name}
-                    />
-                    <AvatarFallback>
-                      {student.name
-                        .split(' ')
-                        .map(n => n[0])
-                        .join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <span className="font-medium text-sm">{student.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {student.email}
-                    </span>
-                  </div>
-                </div>
-              </TableCell>
-
-              <TableCell>
-                <Button variant="outline" size="sm" className="cursor-pointer">
-                  <Link to={`/faculty/${student.id}`}>View</Link>
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {totalStudents > SUB_TABLE_PAGE_SIZE && !isLoading && (
-        <div className="px-6 pb-6">
-          <Pagination
-            currentPage={currentPage}
-            pageSize={SUB_TABLE_PAGE_SIZE}
-            totalCount={totalStudents}
-            onPageChange={handlePageChange}
-          />
+    <Card className="table-container border-border shadow-sm bg-card">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-lg font-semibold text-foreground">
+          Enrolled Students
+        </CardTitle>
+        <span className="text-sm font-semibold text-muted-foreground">
+          {totalStudents}
+        </span>
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="table-header-row">
+                <TableHead>Student</TableHead>
+                <TableHead className="text-right">Details</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {!students || students.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={2}
+                    className="h-24 text-center text-muted-foreground font-medium"
+                  >
+                    No students enrolled yet.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                paginatedStudents?.map(student => (
+                  <TableRow key={student.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="table-avatar">
+                          <AvatarImage
+                            src={student.avatarUrl || ''}
+                            alt={student.name}
+                          />
+                          <AvatarFallback className="bg-muted text-xs text-muted-foreground font-semibold">
+                            {student.name
+                              .split(' ')
+                              .map(n => n[0])
+                              .join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="table-cell-primary">
+                            {student.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {student.email}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="table-action-btn"
+                        onClick={() => navigate(`/faculty/${student.id}`)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </div>
-      )}
-    </div>
+
+        {totalStudents > SUB_TABLE_PAGE_SIZE && !isLoading && (
+          <div className="px-6 pb-6">
+            <Pagination
+              currentPage={currentPage}
+              pageSize={SUB_TABLE_PAGE_SIZE}
+              totalCount={totalStudents}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

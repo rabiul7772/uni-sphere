@@ -10,7 +10,7 @@ const CreateButton = ({ onClick, label = 'Create' }: CreateButtonProps) => {
   return (
     <Button
       onClick={onClick}
-      className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-4 rounded-lg flex items-center gap-2"
+      className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-4 rounded-lg flex items-center gap-2 shadow-md shadow-primary/20"
     >
       <Plus className="h-5 w-5" />
       <span className="font-semibold text-base">{label}</span>

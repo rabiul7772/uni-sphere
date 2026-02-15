@@ -43,28 +43,23 @@ const Departments = () => {
     );
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Breadcrumb */}
+    <div className="page-container">
       <DepartmentBreadcrumb />
-      {/* Header with Search */}
       <DepartmentHeader
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
       />
 
-      {/* Table */}
-      <div className="rounded-xl border border-slate-100 bg-white shadow-sm overflow-hidden">
-        <DepartmentTable departments={departments} isLoading={isPending} />
+      <DepartmentTable departments={departments} isLoading={isPending} />
 
-        {totalCount > PAGE_SIZE && (
-          <Pagination
-            currentPage={page}
-            totalCount={totalCount}
-            pageSize={PAGE_SIZE}
-            onPageChange={handlePageChange}
-          />
-        )}
-      </div>
+      {totalCount > PAGE_SIZE && (
+        <Pagination
+          currentPage={page}
+          totalCount={totalCount}
+          pageSize={PAGE_SIZE}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

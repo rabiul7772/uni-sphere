@@ -17,7 +17,9 @@ const Modal = ({ isOpen = true, onClose, children, title }: ModalProps) => {
     } else {
       document.body.style.overflow = 'unset';
     }
-    return () => (document.body.style.overflow = 'unset');
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -31,12 +33,12 @@ const Modal = ({ isOpen = true, onClose, children, title }: ModalProps) => {
       />
 
       {/* Modal Content */}
-      <div className="relative z-50 w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative z-50 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl bg-card border border-border p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+          <h2 className="text-xl font-semibold text-foreground">{title}</h2>
           <button
             onClick={() => onClose?.()}
-            className="rounded-full p-1 hover:bg-slate-100 text-slate-500 transition-colors"
+            className="rounded-full p-1 hover:bg-muted text-muted-foreground transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
