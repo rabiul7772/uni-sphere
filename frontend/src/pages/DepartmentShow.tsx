@@ -44,7 +44,7 @@ const DepartmentShow = () => {
     .filter((v, i, a) => a.findIndex(t => t.id === v.id) === i);
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] space-y-8 p-6">
+    <div className="detail-container">
       <DepartmentHeader department={department} isLoading={isPending} />
       <DepartmentStats
         description={department?.description}
@@ -55,7 +55,7 @@ const DepartmentShow = () => {
       />
       <DepartmentSubjects subjects={subjects} isLoading={isPending} />
       <DepartmentClasses subjects={subjects} isLoading={isPending} />
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className="detail-grid-2">
         <PeopleTable title="Teachers" people={teachers} isLoading={isPending} />
         <PeopleTable title="Students" people={students} isLoading={isPending} />
       </div>

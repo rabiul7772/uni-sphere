@@ -16,7 +16,7 @@ const SubjectDepartment = ({
 }: SubjectDepartmentProps) => {
   if (isLoading) {
     return (
-      <Card className="border-slate-100 shadow-sm transition-all duration-200">
+      <Card className="border-border shadow-sm transition-all duration-200 bg-card">
         <CardHeader className="pb-2">
           <Skeleton className="h-6 w-28" />
         </CardHeader>
@@ -31,17 +31,17 @@ const SubjectDepartment = ({
   if (!department) return null;
 
   return (
-    <Card className="border-slate-100 shadow-sm transition-all duration-200">
+    <Card className="border-border shadow-sm transition-all duration-200 bg-card">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-bold text-slate-900">
+        <CardTitle className="text-lg font-bold text-foreground">
           Department
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-1">
-        <h3 className="text-base font-bold text-slate-900">
+        <h3 className="text-base font-bold text-foreground">
           {department.name}
         </h3>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           Associated {department.code} department information and resources.
         </p>
       </CardContent>

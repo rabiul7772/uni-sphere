@@ -14,14 +14,7 @@ import {
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const COLORS = [
-  '#8884d8',
-  '#82ca9d',
-  '#ffc658',
-  '#ff8042',
-  '#0088fe',
-  '#00c49f'
-];
+const PIE_COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-5)'];
 
 export const PieChartCard = ({
   title,
@@ -32,7 +25,7 @@ export const PieChartCard = ({
 }) => {
   const coloredData = data.map((item, index) => ({
     ...item,
-    fill: COLORS[index % COLORS.length]
+    fill: PIE_COLORS[index % PIE_COLORS.length]
   }));
 
   return (
@@ -53,28 +46,57 @@ export const PieChartCard = ({
               cy="50%"
               paddingAngle={3}
               isAnimationActive={true}
-              label={({ percent }) => `${((percent ?? 0) * 100).toFixed(0)}%`}
+              label={({
+                cx,
+                cy,
+                midAngle,
+                innerRadius,
+                outerRadius,
+                percent
+              }) => {
+                const RADIAN = Math.PI / 180;
+                const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                const x = cx + radius * Math.cos(-midAngle! * RADIAN);
+                const y = cy + radius * Math.sin(-midAngle! * RADIAN);
+
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    fill="white"
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    className="font-bold text-[10px]"
+                  >
+                    {`${((percent ?? 0) * 100).toFixed(0)}%`}
+                  </text>
+                );
+              }}
               labelLine={false}
             />
             <Tooltip
               contentStyle={{
+                backgroundColor: 'var(--card)',
                 borderRadius: '8px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid var(--border)',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                fontWeight: 600
+                fontWeight: 600,
+                color: 'var(--foreground)'
               }}
+              itemStyle={{ color: 'var(--foreground)' }}
             />
             <Legend
               layout="vertical"
               verticalAlign="middle"
               align="right"
-              width="40%"
+              width="45%"
               iconSize={14}
               iconType="circle"
               wrapperStyle={{
-                paddingLeft: '16px',
+                paddingLeft: '20px',
                 fontSize: '14px',
-                lineHeight: '28px'
+                fontWeight: 700,
+                lineHeight: '24px'
               }}
             />
           </PieChart>
@@ -109,41 +131,56 @@ export const AreaChartCard = ({
         >
           <defs>
             <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+              <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid
             strokeDasharray="4"
             vertical={false}
-            stroke="#e5e7eb"
+            stroke="var(--border)"
           />
           <XAxis
             dataKey={xKey}
-            tick={{ fontSize: 12, fontWeight: 600 }}
+            tick={{
+              fontSize: 12,
+              fontWeight: 600,
+              fill: 'var(--muted-foreground)'
+            }}
             tickLine={true}
-            axisLine={{ stroke: '#e5e7eb' }}
+            axisLine={{ stroke: 'var(--border)' }}
           />
           <YAxis
-            tick={{ fontSize: 12, fontWeight: 600 }}
+            tick={{
+              fontSize: 12,
+              fontWeight: 600,
+              fill: 'var(--muted-foreground)'
+            }}
             tickLine={true}
-            axisLine={true}
+            axisLine={{ stroke: 'var(--border)' }}
           />
           <Tooltip
             defaultIndex={4}
             contentStyle={{
+              backgroundColor: 'var(--card)',
               borderRadius: '8px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              fontWeight: 600
+              fontWeight: 600,
+              color: 'var(--foreground)'
             }}
+            itemStyle={{ color: 'var(--foreground)' }}
           />
-          <Legend iconType="circle" iconSize={12} />
+          <Legend
+            iconType="circle"
+            iconSize={12}
+            wrapperStyle={{ color: 'var(--foreground)' }}
+          />
           <Area
             type="monotone"
             dataKey={yKey}
             name={label}
-            stroke="#8884d8"
+            stroke="var(--chart-2)"
             fill="url(#colorGradient)"
             strokeWidth={3}
             isAnimationActive={true}
@@ -180,33 +217,48 @@ export const BarChartCard = ({
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}
-            stroke="#e5e7eb"
+            stroke="var(--border)"
           />
           <XAxis
             dataKey={xKey}
-            tick={{ fontSize: 12, fontWeight: 600 }}
+            tick={{
+              fontSize: 12,
+              fontWeight: 600,
+              fill: 'var(--muted-foreground)'
+            }}
             tickLine={false}
-            axisLine={{ stroke: '#e5e7eb' }}
+            axisLine={{ stroke: 'var(--border)' }}
           />
           <YAxis
-            tick={{ fontSize: 12, fontWeight: 600 }}
+            tick={{
+              fontSize: 12,
+              fontWeight: 600,
+              fill: 'var(--muted-foreground)'
+            }}
             tickLine={false}
             axisLine={false}
           />
           <Tooltip
             contentStyle={{
+              backgroundColor: 'var(--card)',
               borderRadius: '8px',
-              border: '1px solid #e5e7eb',
+              border: '1px solid var(--border)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              fontWeight: 600
+              fontWeight: 600,
+              color: 'var(--foreground)'
             }}
-            cursor={{ fill: 'rgba(0,0,0,0.05)' }}
+            itemStyle={{ color: 'var(--foreground)' }}
+            cursor={{ fill: 'var(--muted)', opacity: 0.1 }}
           />
-          <Legend iconType="circle" iconSize={12} />
+          <Legend
+            iconType="circle"
+            iconSize={12}
+            wrapperStyle={{ color: 'var(--foreground)' }}
+          />
           <Bar
             dataKey={yKey}
             name={label}
-            fill="#82ca9d"
+            fill="var(--chart-2)"
             radius={[4, 4, 0, 0]}
             isAnimationActive={true}
           />

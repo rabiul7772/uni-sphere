@@ -11,7 +11,7 @@ import { Home } from 'lucide-react';
 
 export const EnrollmentsBreadcrumb = () => {
   return (
-    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+    <div className="flex items-center gap-4 text-sm text-muted-foreground">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

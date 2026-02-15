@@ -128,7 +128,7 @@ export const CreateClassForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
         <BannerUpload
           imagePreview={imagePreview}
           onImageChange={handleImageChange}

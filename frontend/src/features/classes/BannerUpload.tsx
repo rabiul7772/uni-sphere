@@ -13,12 +13,14 @@ export const BannerUpload = ({
   isLoading
 }: BannerUploadProps) => {
   return (
-    <div className="space-y-2">
-      <Label className="text-xs font-bold text-slate-700">Banner Image *</Label>
+    <div className="space-y-1.5">
+      <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        Banner Image *
+      </Label>
       <div className="relative">
         <label
           htmlFor="banner-upload"
-          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all overflow-hidden group"
+          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-2xl cursor-pointer bg-muted/20 dark:bg-muted/10 hover:bg-card dark:hover:bg-muted/20 transition-all overflow-hidden group shadow-sm"
         >
           {imagePreview ? (
             <img
@@ -28,13 +30,15 @@ export const BannerUpload = ({
             />
           ) : (
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <div className="p-3 bg-white rounded-xl shadow-sm mb-3 group-hover:scale-110 transition-transform">
-                <UploadCloud className="w-8 h-8 text-orange-500" />
+              <div className="p-3 bg-card dark:bg-muted/50 rounded-xl shadow-sm mb-3 group-hover:scale-110 transition-transform border border-border">
+                <UploadCloud className="w-8 h-8 text-primary" />
               </div>
-              <p className="text-sm font-bold text-slate-900">
-                <span className="text-orange-600">Click to upload photo</span>
+              <p className="text-sm font-bold text-foreground">
+                <span className="text-primary">Click to upload photo</span>
               </p>
-              <p className="text-xs text-slate-500 mt-1">PNG, JPG up to 5MB</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                PNG, JPG up to 5MB
+              </p>
             </div>
           )}
           <input

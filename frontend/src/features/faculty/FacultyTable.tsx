@@ -24,58 +24,51 @@ export const FacultyTable = ({ users, isLoading }: FacultyTableProps) => {
   if (isLoading) return <Spinner size="xl" className="min-h-[200px]" />;
 
   if (users.length === 0) {
-    return (
-      <div className="w-full h-64 flex items-center justify-center text-slate-500">
-        No faculty members found.
-      </div>
-    );
+    return <div className="table-empty-state">No faculty members found.</div>;
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div className="table-container">
       <Table>
-        <TableHeader className="bg-slate-50/50">
-          <TableRow>
-            <TableHead className="font-bold text-slate-700">Name</TableHead>
-            <TableHead className="font-bold text-slate-700">Email</TableHead>
-            <TableHead className="font-bold text-slate-700">Role</TableHead>
-            <TableHead className="text-right font-bold text-slate-700">
-              Action
-            </TableHead>
+        <TableHeader>
+          <TableRow className="table-header-row">
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map(user => (
-            <TableRow
-              key={user.id}
-              className="hover:bg-slate-50/50 transition-colors"
-            >
+            <TableRow key={user.id} className="text-[13px]">
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10 border border-slate-100">
+                  <Avatar className="table-avatar">
                     <AvatarImage src={user.avatarUrl || ''} />
-                    <AvatarFallback className="bg-indigo-50 text-indigo-700 font-bold">
+                    <AvatarFallback className="bg-muted text-muted-foreground font-semibold text-xs">
                       {user.name.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="font-bold text-slate-900">
+                    <span className="table-cell-primary bg-transparent text-[13px]">
                       {user.name}
                     </span>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-slate-600">{user.email}</TableCell>
+              <TableCell className="table-cell-primary text-[13px]">
+                {user.email}
+              </TableCell>
               <TableCell>
                 <Badge
                   variant="secondary"
                   className={`${
                     user.role === 'admin'
-                      ? 'bg-amber-50 text-amber-700'
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-500'
                       : user.role === 'teacher'
-                        ? 'bg-indigo-50 text-indigo-700'
-                        : 'bg-emerald-50 text-emerald-700'
-                  } border-none capitalize font-bold`}
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-500'
+                  } border-none capitalize font-semibold`}
                 >
                   {user.role}
                 </Badge>
@@ -84,7 +77,7 @@ export const FacultyTable = ({ users, isLoading }: FacultyTableProps) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-lg h-8 px-4 font-bold border-slate-200 text-slate-600 hover:bg-slate-50"
+                  className="table-action-btn"
                   onClick={() => navigate(`/faculty/${user.id}`)}
                 >
                   View

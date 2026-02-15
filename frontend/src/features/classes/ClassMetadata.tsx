@@ -15,7 +15,7 @@ export default function ClassMetadata({
 }: ClassMetadataProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 p-6 border rounded-xl bg-card">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 border rounded-xl bg-card">
         {/* Left Column Skeleton */}
         <div className="flex flex-col gap-10">
           {/* Instructor Skeleton */}
@@ -70,7 +70,7 @@ export default function ClassMetadata({
   if (!classData) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 p-6 border rounded-xl bg-card">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 border rounded-xl bg-card">
       {/* Left Column: Teacher & Subject */}
       <div className="flex flex-col gap-10">
         {/* Instructor Section */}
@@ -115,7 +115,7 @@ export default function ClassMetadata({
                 {classData.subject?.code}
               </Badge>
             </div>
-            <h3 className="text-xl font-bold text-emerald-500">
+            <h3 className="text-xl font-bold text-primary">
               {classData.subject?.name}
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -132,7 +132,7 @@ export default function ClassMetadata({
           <span>Department</span>
         </div>
         <div className="flex flex-col gap-2">
-          <h3 className="text-xl font-bold text-emerald-500">
+          <h3 className="text-xl font-bold text-primary">
             {classData.department?.name}
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed">

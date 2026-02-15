@@ -1,5 +1,7 @@
 import api from '@/lib/axios';
 
+import type { ApiResponse } from '@/types/api';
+
 export interface User {
   id: number;
   name: string;
@@ -10,16 +12,8 @@ export interface User {
   updatedAt: string;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data: User;
-}
-
-export interface MessageResponse {
-  success: boolean;
-  message: string;
-}
+export type AuthResponse = ApiResponse<User>;
+export type MessageResponse = ApiResponse<void>; // or appropriate type if data is null/void
 
 export const signup = async (data: any): Promise<User> => {
   const response = await api.post<AuthResponse>('/auth/signup', data);

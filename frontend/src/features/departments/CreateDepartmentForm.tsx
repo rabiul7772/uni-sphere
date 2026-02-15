@@ -50,88 +50,88 @@ export const CreateDepartmentForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="flex flex-col gap-2.5">
+      <div className="space-y-1.5">
         <Label
           htmlFor="name"
-          className="text-[15px] font-semibold text-slate-700"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
         >
-          Department Name
+          Department Name *
         </Label>
         <Input
           id="name"
           placeholder="e.g. Computer Science"
           disabled={isPending}
-          className="h-11 border border-slate-300 shadow-sm"
+          className="h-10 rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm"
           {...register('name')}
         />
         {errors.name && (
-          <p className="text-sm text-destructive font-medium">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.name.message}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-2.5">
+      <div className="space-y-1.5">
         <Label
           htmlFor="code"
-          className="text-[15px] font-semibold text-slate-700"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
         >
-          Code
+          Department Code *
         </Label>
         <Input
           id="code"
-          placeholder="e.g. CS"
+          placeholder="e.g. DEPT-CS"
           disabled={isPending}
-          className="h-11 border border-slate-300 shadow-sm"
+          className="h-10 rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm uppercase"
           {...register('code')}
         />
         {errors.code && (
-          <p className="text-sm text-destructive font-medium">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.code.message}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-2.5">
+      <div className="space-y-1.5">
         <Label
           htmlFor="description"
-          className="text-[15px] font-semibold text-slate-700"
+          className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
         >
-          Description
+          Description *
         </Label>
         <Textarea
           id="description"
           placeholder="Enter department description..."
           disabled={isPending}
-          className="min-h-[50px] border border-slate-300 shadow-sm"
+          className="min-h-[100px] rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm resize-none"
           {...register('description')}
         />
         {errors.description && (
-          <p className="text-sm text-destructive font-medium">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.description.message}
           </p>
         )}
       </div>
 
-      <div className="flex justify-end gap-3 pt-4">
+      <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
         <Button
           type="button"
           variant="outline"
           onClick={onCancel}
           disabled={isPending}
-          className="h-11 px-5 text-base"
+          className="h-10 px-5 font-bold rounded-xl border-slate-200"
         >
           Cancel
         </Button>
         <Button
           type="submit"
           disabled={isPending}
-          className="h-11 px-6 bg-indigo-600 hover:bg-indigo-700 text-base"
+          className="h-10 px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl shadow-lg shadow-primary/10 transition-all min-w-[120px]"
         >
           {isPending ? (
             <Spinner size="sm" className="mr-2 h-4 w-4 p-0 text-white" />
           ) : null}
-          {isPending ? 'Creating...' : 'Create Department'}
+          {isPending ? 'Submitting...' : 'Submit'}
         </Button>
       </div>
     </form>

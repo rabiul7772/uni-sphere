@@ -23,18 +23,16 @@ const DepartmentHeader = ({
   return (
     <div className="flex items-end justify-between">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
           Departments
         </h1>
-        <p className="text-slate-500">
-          Quick access to essential metrics and management tools.
-        </p>
       </div>
-      <div className="flex items-center justify-between gap-4 rounded-xl bg-white p-1">
+      <div className="flex items-center justify-between gap-4 rounded-xl bg-card border border-border p-1">
         <SearchInput
           searchTerm={searchTerm}
           onSearchChange={onSearchChange}
           placeholder="Search by name or code"
+          className="hidden md:block"
         />
         {canCreate && (
           <>

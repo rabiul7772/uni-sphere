@@ -1,64 +1,13 @@
 import api from '@/lib/axios';
 
-// Department with subjects count (used in list view)
-export interface DepartmentSummary {
-  id: string;
-  code: string;
-  name: string;
-  description: string | null;
-  subjects: number; // Count of subjects
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type {
+  Department,
+  DepartmentSummary,
+  NewDepartment
+} from '@/types/department';
+export type { Department, DepartmentSummary, NewDepartment };
 
-// Department with full subjects array (used in detail view)
-export interface Department {
-  id: string;
-  code: string;
-  name: string;
-  description: string | null;
-  subjects?: Array<{
-    id: string;
-    name: string;
-    code: string;
-    description: string;
-    classes: Array<{
-      id: string;
-      name: string;
-      status: string;
-      teacher: {
-        id: string;
-        fullName: string;
-        email: string;
-        avatar?: string;
-        role: string;
-      };
-      subject: {
-        id: string;
-        name: string;
-        code: string;
-      };
-      enrollments: Array<{
-        id: string;
-        student: {
-          id: string;
-          fullName: string;
-          email: string;
-          avatar?: string;
-          role: string;
-        };
-      }>;
-    }>;
-  }>;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
+import type { ApiResponse } from '@/types/api';
 
 export interface GetDepartmentsParams {
   page?: number;
@@ -89,7 +38,7 @@ export const getDepartment = async (id: string): Promise<Department> => {
 };
 
 export const createDepartment = async (
-  department: Department
+  department: NewDepartment
 ): Promise<Department> => {
   const response = await api.post<ApiResponse<Department>>(
     '/departments',

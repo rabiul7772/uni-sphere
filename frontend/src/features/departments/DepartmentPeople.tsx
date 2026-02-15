@@ -9,7 +9,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Person {
   id: string;
@@ -27,19 +26,19 @@ interface DepartmentPeopleProps {
 
 const DepartmentPeople = ({ title, people }: DepartmentPeopleProps) => {
   return (
-    <Card className="border-slate-100 shadow-sm">
+    <Card className="table-container border-border shadow-sm bg-card">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg font-bold">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-50 hover:bg-transparent">
-              <TableHead className="font-bold text-slate-900">User</TableHead>
-              <TableHead className="font-bold text-slate-900">Role</TableHead>
-              <TableHead className="text-right font-bold text-slate-900 pr-8">
-                Details
-              </TableHead>
+            <TableRow className="table-header-row">
+              <TableHead>User</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead className="text-right">Details</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -47,22 +46,19 @@ const DepartmentPeople = ({ title, people }: DepartmentPeopleProps) => {
               <TableRow>
                 <TableCell
                   colSpan={3}
-                  className="h-24 text-center text-slate-500"
+                  className="h-24 text-center text-muted-foreground font-medium"
                 >
                   No {title.toLowerCase()} found.
                 </TableCell>
               </TableRow>
             ) : (
               people.map(person => (
-                <TableRow
-                  key={person.id}
-                  className="border-slate-50 hover:bg-slate-50/50"
-                >
-                  <TableCell className="py-4">
+                <TableRow key={person.id}>
+                  <TableCell>
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-8 w-8">
+                      <Avatar className="table-avatar">
                         <AvatarImage src={person.avatarUrl} />
-                        <AvatarFallback className="bg-slate-100 text-xs text-slate-600 font-bold">
+                        <AvatarFallback className="bg-muted text-xs text-muted-foreground font-semibold">
                           {(person.fullName || person.name || 'U')
                             .split(' ')
                             .map(n => n[0])
@@ -70,23 +66,23 @@ const DepartmentPeople = ({ title, people }: DepartmentPeopleProps) => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-sm font-semibold text-slate-700">
+                        <span className="table-cell-primary">
                           {person.fullName || person.name}
                         </span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-muted-foreground">
                           {person.email}
                         </span>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="text-slate-500 text-sm font-medium">
+                  <TableCell className="table-cell-secondary">
                     {person.role}
                   </TableCell>
-                  <TableCell className="text-right pr-8">
+                  <TableCell className="text-right">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 rounded-lg border-slate-200 text-xs font-medium text-slate-600"
+                      className="table-action-btn"
                     >
                       View
                     </Button>

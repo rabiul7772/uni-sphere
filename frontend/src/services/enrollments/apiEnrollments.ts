@@ -1,28 +1,11 @@
 import api from '@/lib/axios';
 
-export interface EnrollmentDetails {
-  id: number;
-  class: {
-    id: number;
-    name: string;
-    description: string;
-  };
-  subject: {
-    name: string;
-  };
-  department: {
-    name: string;
-  };
-  teacher: {
-    name: string;
-    email: string;
-  };
-}
+import type { EnrollmentDetails } from '@/types/enrollment';
+export type { EnrollmentDetails };
 
-export interface EnrollmentResponse {
-  success: boolean;
-  data: EnrollmentDetails;
-}
+import type { ApiResponse } from '@/types/api';
+
+export type EnrollmentResponse = ApiResponse<EnrollmentDetails>;
 
 export const enrollInClass = async (data: {
   studentId: number;

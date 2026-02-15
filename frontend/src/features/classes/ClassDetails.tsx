@@ -32,17 +32,14 @@ export default function ClassDetails() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="detail-container">
       <ClassHeader classData={classData} isLoading={isPending} />
-
-      <div className="flex flex-col">
-        <ClassHero classData={classData} isLoading={isPending} />
-        <ClassMetadata classData={classData} isLoading={isPending} />
-        <EnrolledStudentsTable
-          students={classData?.enrolledStudents}
-          isLoading={isPending}
-        />
-      </div>
+      <ClassHero classData={classData} isLoading={isPending} />
+      <ClassMetadata classData={classData} isLoading={isPending} />
+      <EnrolledStudentsTable
+        students={classData?.enrolledStudents}
+        isLoading={isPending}
+      />
     </div>
   );
 }

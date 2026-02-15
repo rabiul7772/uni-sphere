@@ -11,7 +11,7 @@ import { desc, eq, ilike, or, sql } from 'drizzle-orm';
 
 export const getClasses = async (req: Request, res: Response) => {
   try {
-    const { page = '1', limit = '10', search = '' } = req.query;
+    const { page = '1', limit = '8', search = '' } = req.query;
     const pageNum = Number(page);
     const limitNum = Number(limit);
     const offset = (pageNum - 1) * limitNum;

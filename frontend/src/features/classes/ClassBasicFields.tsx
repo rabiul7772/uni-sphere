@@ -29,9 +29,11 @@ export const ClassBasicFields = ({
   } = useFormContext();
 
   return (
-    <div className="space-y-3">
-      <div className="space-y-1">
-        <Label className="text-xs font-bold text-slate-700">Class Name *</Label>
+    <div className="space-y-4">
+      <div className="space-y-1.5">
+        <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+          Class Name *
+        </Label>
         <Input
           placeholder="Introduction to Biology - Section A"
           className="h-10 rounded-xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all shadow-sm disabled:pointer-events-auto"
@@ -39,15 +41,17 @@ export const ClassBasicFields = ({
           disabled={isLoading || isEditing}
         />
         {errors.name && (
-          <p className="text-xs text-red-500 font-medium ml-1">
+          <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
             {errors.name.message as string}
           </p>
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-1">
-          <Label className="text-xs font-bold text-slate-700">Subject *</Label>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Subject *
+          </Label>
           <Controller
             name="subjectId"
             control={control}
@@ -71,14 +75,16 @@ export const ClassBasicFields = ({
             )}
           />
           {errors.subjectId && (
-            <p className="text-xs text-red-500 font-medium ml-1">
+            <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
               {errors.subjectId.message as string}
             </p>
           )}
         </div>
 
-        <div className="space-y-1">
-          <Label className="text-xs font-bold text-slate-700">Teacher *</Label>
+        <div className="space-y-1.5">
+          <Label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Teacher *
+          </Label>
           <Controller
             name="teacherId"
             control={control}
@@ -102,7 +108,7 @@ export const ClassBasicFields = ({
             )}
           />
           {errors.teacherId && (
-            <p className="text-xs text-red-500 font-medium ml-1">
+            <p className="text-[11px] text-destructive font-medium ml-1 mt-1">
               {errors.teacherId.message as string}
             </p>
           )}
