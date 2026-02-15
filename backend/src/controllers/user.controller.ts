@@ -6,7 +6,7 @@ import { desc, sql, or, ilike, and, eq } from 'drizzle-orm';
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
+    const limit = parseInt(req.query.limit as string) || 8;
     const search = req.query.search as string;
     const role = req.query.role as string;
     const offset = (page - 1) * limit;
