@@ -2,7 +2,7 @@
 
 > A comprehensive University Management System for streamlining academic administration, class scheduling, and student enrollment.
 
-![UniSphere Overview](/public/unisphere.png)
+![UniSphere Overview](frontend/public/unisphere.png)
 
 🔗 **Live Demo:** [Link to Live Demo](https://unisphere-demo.com) _(Placeholder)_
 
@@ -29,7 +29,7 @@ Built with performance and scalability in mind, UniSphere leverages a React fron
 
 ### Frontend
 
-- **Framework:** [React](https://react.dev/) (via [Vite](https://vitejs.dev/))
+- **Library:** [React](https://react.dev/)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **UI Library:** [Shadcn UI](https://ui.shadcn.com/) + [Lucide React](https://lucide.dev/)
@@ -49,7 +49,7 @@ Built with performance and scalability in mind, UniSphere leverages a React fron
 
 ### Database & Storage
 
-- **Database:** PostgreSQL
+- **Database:** PostgreSQL with NeonDB
 - **File Storage:** Cloudinary (for avatars and banners)
 
 ## 🏗️ Architecture Overview
@@ -59,7 +59,7 @@ The application follows a standard **Client-Server architecture**.
 - **Frontend:** A Single Page Application (SPA) that consumes RESTful APIs. It utilizes Lazy Loading for performance optimization.
 - **Backend:** A REST API layer that handles business logic, communicates with the PostgreSQL database via Drizzle ORM, and enforces security policies.
 
-## 🚀 Installation & Setup Guide
+## Installation & Setup Guide
 
 ### Prerequisites
 
@@ -70,8 +70,8 @@ The application follows a standard **Client-Server architecture**.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/unisphere.git
-cd unisphere
+git clone https://github.com/rabiul7772/uni-sphere.git
+cd uni-sphere
 ```
 
 ### 2. Frontend Setup
