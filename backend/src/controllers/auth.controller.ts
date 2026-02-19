@@ -144,10 +144,12 @@ export const checkAuth = async (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax'
   });
 
   res.status(200).json({
