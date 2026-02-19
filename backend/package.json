@@ -35,11 +35,11 @@
     "nodemailer": "^8.0.1",
     "pg": "^8.17.2",
     "typescript": "^5.9.3",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "@types/nodemailer": "^6.4.17"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.2.0",
-    "@types/nodemailer": "^7.0.10",
     "tsx": "^4.21.0"
   }
 }
