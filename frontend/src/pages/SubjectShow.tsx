@@ -49,16 +49,8 @@ const SubjectShow = () => {
       />
       <SubjectClasses classes={subject?.classes} isLoading={isPending} />
       <div className="detail-grid-2">
-        <PeopleTable
-          title="Teachers"
-          people={teachers}
-          isLoading={isPending}
-        />
-        <PeopleTable
-          title="Students"
-          people={students}
-          isLoading={isPending}
-        />
+        <PeopleTable title="Teachers" people={teachers} isLoading={isPending} />
+        <PeopleTable title="Students" people={students} isLoading={isPending} />
       </div>
     </div>
   );

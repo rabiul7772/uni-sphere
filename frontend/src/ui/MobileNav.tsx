@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import Mainnav from './Mainnav';
 import Logo from './Logo';
+import Logout from './Logout';
 import { ThemeToggle } from './ThemeToggle';
 import { useState } from 'react';
 import { useLocation } from 'react-router';
@@ -31,22 +32,23 @@ const MobileNav = () => {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[350px] p-0">
-        <SheetHeader className="p-6 border-b border-border">
+      <SheetContent
+        side="left"
+        className="w-[300px] sm:w-[350px] p-0 flex flex-col h-full overflow-hidden"
+      >
+        <SheetHeader className="p-4 border-b border-border flex flex-row items-center justify-between shrink-0">
           <SheetTitle className="text-left">
             <Logo />
           </SheetTitle>
+          <ThemeToggle />
         </SheetHeader>
-        <div className="flex flex-col h-full py-6">
+        <div className="flex-1 overflow-y-auto py-6">
           <div className="px-2">
             <Mainnav />
           </div>
-          <div className="mt-auto p-6 border-t border-border flex items-center justify-between">
-            <span className="text-sm font-medium text-muted-foreground">
-              Theme
-            </span>
-            <ThemeToggle />
-          </div>
+        </div>
+        <div className="shrink-0">
+          <Logout />
         </div>
       </SheetContent>
     </Sheet>

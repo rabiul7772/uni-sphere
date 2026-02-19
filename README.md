@@ -1,10 +1,10 @@
 # UniSphere
 
-> A comprehensive University Management System for streamlining academic administration, class scheduling, and student enrollment.
+A comprehensive University Management System for streamlining academic administration, class scheduling, and student enrollment.
 
 ![UniSphere Overview](frontend/public/unisphere.png)
 
-🔗 **Live Demo:** [Link to Live Demo](https://unisphere-demo.com) _(Placeholder)_
+🔗 [Live Demo](https://uni-sphere-rabiul.vercel.app/)
 
 ## 📋 Project Overview
 
@@ -16,7 +16,7 @@ Built with performance and scalability in mind, UniSphere leverages a React fron
 
 - **Role-Based Access Control (RBAC):** Secure access for Admins, Teachers, and Students with specific permissions.
 - **Department & Subject Management:** Admins can organize academic structures efficiently.
-- **Class Scheduling & Management:** Teachers can create classes, manage capacity, and track status.
+- **Class Scheduling & Management:** Admin & Teachers can create classes, manage capacity, and track status.
 - **Student Enrollment System:** Streamlined process for students to browse and enroll in available classes & enrollment confirmation email.
 - **Interactive Dashboard:** Visual analytics using charts to track enrollments, subjects, and class distribution.
 - **Advanced Search & Filtering:** Find departments, subjects, or classes instantly with server-side filtering.
@@ -44,8 +44,10 @@ Built with performance and scalability in mind, UniSphere leverages a React fron
 - **Framework:** [Express.js](https://expressjs.com/)
 - **Language:** TypeScript
 - **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
-- **Security:** [Arcjet](https://arcjet.com/) (Bot detection & security)
+- **Security:** [Arcjet](https://arcjet.com/) (Rate limiting, bot detection & security)
 - **Validation:** Zod
+- **Email:** Nodemailer
+- **Authentication:** JWT
 
 ### Database & Storage
 
@@ -109,7 +111,8 @@ PORT=5000
 DATABASE_URL="your_database_url"
 JWT_SECRET="your_super_secret_jwt_key"
 FRONTEND_URL="http://localhost:5173"
-RESEND_API_KEY="your_resend_api_key" # For email services
+EMAIL_USER="your-email@gmail.com"   # For email services
+EMAIL_PASS="your-16-character-app-password"
 ARCJET_KEY="your_arcjet_key"     # For security
 ```
 
