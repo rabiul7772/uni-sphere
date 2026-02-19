@@ -1,10 +1,17 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY is not defined in the environment variables');
-}
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)
+  throw new Error(
+    'EMAIL_USER and EMAIL_PASS is not defined in environment variables'
+  );
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER as string,
+    pass: process.env.EMAIL_PASS as string
+  }
+});
 
 interface EnrollmentEmailData {
   studentName: string;
@@ -19,9 +26,9 @@ export const sendEnrollmentEmail = async (data: EnrollmentEmailData) => {
     data;
 
   try {
-    const { data: resData, error } = await resend.emails.send({
-      from: 'UniSphere <onboarding@resend.dev>', // Replace with your verified domain in production
-      to: [studentEmail],
+    const info = await transporter.sendMail({
+      from: `"UniSphere" <${process.env.EMAIL_USER}>`,
+      to: studentEmail,
       subject: `Enrollment Confirmed: ${className}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
@@ -46,14 +53,8 @@ export const sendEnrollmentEmail = async (data: EnrollmentEmailData) => {
       `
     });
 
-    if (error) {
-      console.error('Resend error:', error);
-      return { success: false, error };
-    }
-
-    return { success: true, data: resData };
+    return { success: true, data: info };
   } catch (err) {
-    console.error('Email sending failed:', err);
     return { success: false, error: err };
   }
 };
@@ -64,9 +65,9 @@ export const sendPasswordResetEmail = async (
   resetUrl: string
 ) => {
   try {
-    const { data: resData, error } = await resend.emails.send({
-      from: 'UniSphere <onboarding@resend.dev>',
-      to: [email],
+    const info = await transporter.sendMail({
+      from: `"UniSphere" <${process.env.EMAIL_USER}>`,
+      to: email,
       subject: 'Reset your UniSphere password',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
@@ -94,14 +95,8 @@ export const sendPasswordResetEmail = async (
       `
     });
 
-    if (error) {
-      console.error('Resend error:', error);
-      return { success: false, error };
-    }
-
-    return { success: true, data: resData };
+    return { success: true, data: info };
   } catch (err) {
-    console.error('Password reset email failed:', err);
     return { success: false, error: err };
   }
 };
