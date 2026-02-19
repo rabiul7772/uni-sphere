@@ -40,7 +40,10 @@ app.use('/api/v1/enrollments', enrollmentRouter);
 app.use('/api/v1/dashboard', dashboardRouter);
 
 app.get('/', (req, res) => {
-  res.send('Hello from the uni sphere backend!');
+  res.status(200).json({
+    status: 'success',
+    message: 'UniSphere API is running'
+  });
 });
 
 app.listen(PORT, () => {
