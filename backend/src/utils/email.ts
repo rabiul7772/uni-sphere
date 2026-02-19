@@ -1,10 +1,15 @@
 import nodemailer from 'nodemailer';
 
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)
+  throw new Error(
+    'EMAIL_USER and EMAIL_PASS is not defined in environment variables'
+  );
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    user: process.env.EMAIL_USER as string,
+    pass: process.env.EMAIL_PASS as string
   }
 });
 
@@ -48,10 +53,8 @@ export const sendEnrollmentEmail = async (data: EnrollmentEmailData) => {
       `
     });
 
-    console.log('Enrollment email sent:', info.messageId);
     return { success: true, data: info };
   } catch (err) {
-    console.error('Email sending failed:', err);
     return { success: false, error: err };
   }
 };
@@ -92,10 +95,8 @@ export const sendPasswordResetEmail = async (
       `
     });
 
-    console.log('Password reset email sent:', info.messageId);
     return { success: true, data: info };
   } catch (err) {
-    console.error('Password reset email failed:', err);
     return { success: false, error: err };
   }
 };

@@ -34,7 +34,6 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.1",
     "pg": "^8.17.2",
-    "resend": "^6.9.1",
     "typescript": "^5.9.3",
     "zod": "^4.3.6"
   },
