@@ -14,6 +14,8 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 if (!process.env.FRONTEND_URL)
   throw new Error('FRONTEND_URL is not defined in .env file');
 
